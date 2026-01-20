@@ -14,9 +14,10 @@
 
 ## 단계별 가이드
 
-처음 시작하는 분은 [step-by-step.md](step-by-step.md)를 참조하세요. 프로젝트 생성부터 텍스트 생성까지 9단계로 설명합니다.
-
-자주 묻는 질문은 [faq.md](faq.md)를 참조하세요. 토큰화, 임베딩, 학습 데이터 형식 등 핵심 개념을 쉽게 설명합니다.
+| 문서 | 설명 |
+|------|------|
+| [step-by-step.md](step-by-step.md) | 프로젝트 생성부터 텍스트 생성까지 9단계 가이드 |
+| [faq.md](faq.md) | 자주 묻는 질문 (토큰화, 임베딩, 학습 데이터 등) |
 
 ## 빠른 시작
 
@@ -36,18 +37,28 @@ uv run python scripts/generate.py             # 텍스트 생성
 
 ```
 jai/
-  data/                  # 데이터 디렉토리
-  scripts/               # 실행 스크립트
-    prepare_samples.py   # 데이터 전처리
-    train_tokenizer.py   # 토크나이저 학습
-    build_bin_dataset.py # 바이너리 변환
-    train_gpt.py         # GPT 학습
-    generate.py          # 텍스트 생성
-  checkpoints/           # 모델 체크포인트
-  pyproject.toml         # uv 프로젝트 설정
+├── data/                    # 데이터 디렉토리
+│   ├── raw.txt              # 원본 데이터
+│   ├── samples.txt          # 전처리된 학습 샘플
+│   ├── tokenizer.json       # BPE 토크나이저
+│   └── train.bin, val.bin   # 바이너리 데이터셋
+├── scripts/                 # 실행 스크립트
+│   ├── prepare_samples.py   # 데이터 전처리
+│   ├── train_tokenizer.py   # 토크나이저 학습
+│   ├── build_bin_dataset.py # 바이너리 변환
+│   ├── train_gpt.py         # GPT 학습
+│   └── generate.py          # 텍스트 생성
+├── checkpoints/             # 모델 체크포인트
+├── docs/                    # 상세 기술 문서 (00~08)
+├── faq/                     # FAQ 문서 (개념별 분리)
+├── faq.md                   # FAQ 목차 및 빠른 참조
+├── CLAUDE.md                # AI 어시스턴트 가이드
+└── pyproject.toml           # uv 프로젝트 설정
 ```
 
 ## 문서 목록
+
+### 기술 문서 (docs/)
 
 상세한 학습 자료는 `docs/` 폴더에서 확인하세요.
 
@@ -62,6 +73,22 @@ jai/
 | [06-training.md](docs/06-training.md) | 학습 루프, 체크포인트 |
 | [07-generation.md](docs/07-generation.md) | 텍스트 생성, 샘플링 파라미터 |
 | [08-server.md](docs/08-server.md) | JAI LLM 서버, API, 데몬 실행 |
+
+### FAQ 문서 (faq/)
+
+핵심 개념을 쉽게 설명합니다. 전체 목차는 [faq.md](faq.md)를 참조하세요.
+
+| 문서 | 내용 |
+|------|------|
+| [data-flow.md](faq/data-flow.md) | 데이터 흐름 파이프라인 |
+| [why-job-llm.md](faq/why-job-llm.md) | 구인 정보 LLM 필요성 |
+| [sample-data.md](faq/sample-data.md) | 샘플 데이터 요구사항 |
+| [why-tokenize.md](faq/why-tokenize.md) | 토큰화 이유 |
+| [how-to-tokenize.md](faq/how-to-tokenize.md) | 토큰화 방법 (외부 라이브러리) |
+| [vocab-size.md](faq/vocab-size.md) | vocab_size 설명 |
+| [after-tokenize.md](faq/after-tokenize.md) | 토큰화 다음 단계 |
+| [core-concepts.md](faq/core-concepts.md) | 핵심 개념 9가지 |
+| [troubleshooting.md](faq/troubleshooting.md) | 트러블슈팅 |
 
 ## 핵심 개념
 
