@@ -52,20 +52,20 @@ tokenizer.save(OUT_PATH)
 print(f"토크나이저 저장 완료: {OUT_PATH}")
 
 # ============================================
-# 테스트
+# 테스트 (samples.txt에서 일부 추출)
 # ============================================
 print("\n--- 토크나이저 테스트 ---")
 
-test_texts = [
-    "안녕하세요. 연락처 정보입니다.",
-    "TEL: 02-1234-5678",
-    "주미 대한민국 대사관",
-    "[QUESTION] 연락처를 알려주세요 [/QUESTION]",
-]
+# samples.txt에서 처음 500자를 테스트 텍스트로 사용
+with open(IN_PATH, "r", encoding="utf-8") as f:
+    sample_text = f.read()[:500]
 
-for text in test_texts:
+# 줄 단위로 분리하여 테스트 (비어있지 않은 줄 5개)
+test_lines = [line for line in sample_text.split("\n") if line.strip()][:5]
+
+for text in test_lines:
     encoded = tokenizer.encode(text)
-    print(f"원본: {text}")
-    print(f"토큰: {encoded.tokens}")
-    print(f"ID: {encoded.ids}")
+    print(f"원본: {text[:50]}{'...' if len(text) > 50 else ''}")
+    print(f"토큰: {encoded.tokens[:10]}{'...' if len(encoded.tokens) > 10 else ''}")
+    print(f"ID: {encoded.ids[:10]}{'...' if len(encoded.ids) > 10 else ''}")
     print()

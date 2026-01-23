@@ -16,6 +16,7 @@
 
 | 문서 | 설명 |
 |------|------|
+| [study.md](study.md) | 단계별 학습 가이드 (8단계) |
 | [step-by-step.md](step-by-step.md) | 프로젝트 생성부터 텍스트 생성까지 9단계 가이드 |
 | [faq.md](faq.md) | 자주 묻는 질문 (토큰화, 임베딩, 학습 데이터 등) |
 
@@ -78,19 +79,15 @@ jai/
 
 핵심 개념을 쉽게 설명합니다. 전체 목차는 [faq.md](faq.md)를 참조하세요.
 
-| 문서 | 내용 |
-|------|------|
-| [data-flow.md](faq/data-flow.md) | 데이터 흐름 파이프라인 |
-| [why-job-llm.md](faq/why-job-llm.md) | 구인 정보 LLM 필요성 |
-| [sample-data.md](faq/sample-data.md) | 샘플 데이터 요구사항 |
-| [sample-data-strategy.md](faq/sample-data-strategy.md) | 샘플 데이터 구성 전략 |
-| [why-tokenize.md](faq/why-tokenize.md) | 토큰화 이유 |
-| [how-to-tokenize.md](faq/how-to-tokenize.md) | 토큰화 방법 (외부 라이브러리) |
-| [vocab-size.md](faq/vocab-size.md) | vocab_size 설명 |
-| [after-tokenize.md](faq/after-tokenize.md) | 토큰화 다음 단계 |
-| [embedding-and-prediction.md](faq/embedding-and-prediction.md) | 임베딩과 다음 토큰 예측 |
-| [core-concepts.md](faq/core-concepts.md) | 핵심 개념 9가지 |
-| [troubleshooting.md](faq/troubleshooting.md) | 트러블슈팅 |
+| 카테고리 | 문서 |
+|----------|------|
+| **프로젝트 개요** | [data-flow.md](faq/data-flow.md), [why-job-llm.md](faq/why-job-llm.md), [sample-data.md](faq/sample-data.md), [sample-data-strategy.md](faq/sample-data-strategy.md) |
+| **환경 설정** | [environment-setup.md](faq/environment-setup.md), [project-structure.md](faq/project-structure.md) |
+| **데이터 준비** | [data-preparation.md](faq/data-preparation.md) |
+| **토큰화** | [why-tokenize.md](faq/why-tokenize.md), [how-to-tokenize.md](faq/how-to-tokenize.md), [bpe-algorithm.md](faq/bpe-algorithm.md), [vocab-size.md](faq/vocab-size.md), [after-tokenize.md](faq/after-tokenize.md) |
+| **모델 구조** | [embedding-and-prediction.md](faq/embedding-and-prediction.md), [model-architecture.md](faq/model-architecture.md) |
+| **학습 및 배포** | [training.md](faq/training.md), [generation.md](faq/generation.md), [server.md](faq/server.md) |
+| **심화 학습** | [core-concepts.md](faq/core-concepts.md), [troubleshooting.md](faq/troubleshooting.md) |
 
 ## 핵심 개념
 

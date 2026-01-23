@@ -1,5 +1,144 @@
-인공지능 개발을 위한 학습 자료
-===
+# JAI 학습 가이드
+
+JAI (Job AI) 프로젝트를 통해 LLM을 처음부터(from scratch) 학습하는 단계별 가이드입니다.
+
+---
+
+## 학습 목표
+
+이 가이드를 완료하면:
+- ✅ BPE 토크나이저의 원리와 학습 방법을 이해합니다
+- ✅ Decoder-only Transformer (GPT) 구조를 이해합니다
+- ✅ 다음 토큰 예측(Next-token prediction) 학습 원리를 이해합니다
+- ✅ 직접 학습한 LLM으로 텍스트를 생성할 수 있습니다
+
+---
+
+## 단계별 학습 가이드
+
+### 1단계: 환경 설정
+
+**학습 내용**: uv 패키지 관리자, PyTorch, MPS (Mac GPU) 설정
+
+```bash
+# uv 설치 및 프로젝트 생성
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv init jai && cd jai
+uv add torch tokenizers tqdm numpy
+```
+
+📚 참고: [environment-setup.md](faq/environment-setup.md), [project-structure.md](faq/project-structure.md)
+
+### 2단계: 데이터 이해하기
+
+**핵심 개념**: "데이터 포맷 = 모델 능력"
+
+```
+단순 텍스트 나열 → 텍스트 이어쓰기만 잘함
+질문→답변 구조   → 질문에 답변하는 능력
+```
+
+📚 참고: [data-preparation.md](faq/data-preparation.md), [sample-data-strategy.md](faq/sample-data-strategy.md)
+
+### 3단계: 토큰화 이해하기
+
+**핵심 개념**: BPE = 자주 등장하는 문자 쌍을 병합하여 어휘 생성
+
+```bash
+uv run python scripts/train_tokenizer.py      # 토크나이저 학습
+uv run python scripts/build_bin_dataset.py    # 바이너리 변환
+```
+
+📚 참고: [why-tokenize.md](faq/why-tokenize.md), [bpe-algorithm.md](faq/bpe-algorithm.md)
+
+### 4단계: 임베딩 이해하기
+
+**핵심 개념**: 임베딩 = 토큰 ID → 고차원 벡터 변환 (룩업 테이블)
+
+```python
+self.tok_emb = nn.Embedding(vocab_size, n_embd)  # 24000×384 행렬
+x = self.tok_emb(token_ids)  # 인덱스로 행 가져오기
+```
+
+📚 참고: [embedding-and-prediction.md](faq/embedding-and-prediction.md)
+
+### 5단계: GPT 아키텍처 이해하기
+
+**핵심 개념**: Token Emb + Pos Emb → N × Block → Output Head
+
+📚 참고: [model-architecture.md](faq/model-architecture.md), [core-concepts.md](faq/core-concepts.md)
+
+### 6단계: 모델 학습하기
+
+**핵심 개념**: Next-token prediction + CrossEntropy 손실
+
+```bash
+uv run python scripts/train_gpt.py
+```
+
+📚 참고: [training.md](faq/training.md)
+
+### 7단계: 텍스트 생성하기
+
+**핵심 개념**: Autoregressive 생성 (한 토큰씩 예측 → 반복)
+
+```bash
+uv run python scripts/generate.py
+```
+
+📚 참고: [generation.md](faq/generation.md)
+
+### 8단계: 서버 배포하기 (선택)
+
+**핵심 개념**: FastAPI + Semaphore로 동시 요청 처리
+
+📚 참고: [server.md](faq/server.md)
+
+---
+
+## 전체 파이프라인
+
+```
+[데이터 준비]
+jobs-sg.json → convert_jobs_to_samples.py → samples.txt
+                                                 ↓
+[토크나이저]                            train_tokenizer.py → tokenizer.json
+                                                 ↓
+[바이너리 변환]                         build_bin_dataset.py → train.bin / val.bin
+                                                 ↓
+[모델 학습]                             train_gpt.py → ckpt.pt
+                                                 ↓
+[텍스트 생성]                           generate.py → "서울에서 React 개발자를..."
+```
+
+### 각 단계의 역할
+
+| 단계 | 입력 | 출력 | 핵심 작업 |
+|------|------|------|----------|
+| 데이터 준비 | JSON | 텍스트 | 구인 정보를 Q&A 형식으로 변환 |
+| 토크나이저 | 텍스트 | 어휘 사전 | BPE로 24,000개 토큰 생성 |
+| 바이너리 변환 | 텍스트 + 사전 | 숫자 배열 | 텍스트를 토큰 ID로 변환 |
+| 모델 학습 | 숫자 배열 | 가중치 | 다음 토큰 예측 학습 |
+| 텍스트 생성 | 프롬프트 | 텍스트 | 확률 분포에서 샘플링 |
+
+---
+
+## 권장 학습 순서
+
+| 순서 | 주제 | 문서 |
+|------|------|------|
+| 1 | 프로젝트 개요 | [data-flow.md](faq/data-flow.md) |
+| 2 | 환경 설정 | [environment-setup.md](faq/environment-setup.md) |
+| 3 | 데이터 준비 | [data-preparation.md](faq/data-preparation.md) |
+| 4 | 토큰화 | [bpe-algorithm.md](faq/bpe-algorithm.md) |
+| 5 | 임베딩 | [embedding-and-prediction.md](faq/embedding-and-prediction.md) |
+| 6 | 모델 구조 | [model-architecture.md](faq/model-architecture.md) |
+| 7 | 학습 | [training.md](faq/training.md) |
+| 8 | 생성 | [generation.md](faq/generation.md) |
+
+---
+
+# 인공지능 개발을 위한 학습 자료
 
 ## 파라미터 (Parameter)
 
@@ -210,3 +349,101 @@ vocab = [[0.1, 0.2, 0.3],  # "채용"의 벡터
 ```
 
 **요약**: 가중치는 "무엇을 하는지(역할)", 벡터는 "어떤 모양인지(형태)"
+
+---
+
+## 토큰화 (Tokenization)
+
+### 왜 토큰화가 필요한가?
+
+컴퓨터는 텍스트를 직접 이해할 수 없습니다. 숫자로 변환해야 수학 연산이 가능합니다.
+
+```
+"서울에서 React 개발자 채용"
+         ↓ 토큰화
+["서울", "에서", "React", "개발자", "채용"]
+         ↓ ID 변환
+[1523, 892, 4521, 2847, 1956]
+```
+
+### BPE (Byte Pair Encoding) 알고리즘
+
+자주 등장하는 문자 쌍을 반복적으로 병합하여 어휘를 생성합니다.
+
+```
+1단계: 문자 단위로 시작
+  "low" → ['l', 'o', 'w']
+  "lower" → ['l', 'o', 'w', 'e', 'r']
+
+2단계: 가장 빈번한 쌍 병합
+  ('l', 'o') → 'lo'  (빈도 높음)
+  → ['lo', 'w'], ['lo', 'w', 'e', 'r']
+
+3단계: 반복
+  ('lo', 'w') → 'low'
+  → ['low'], ['low', 'e', 'r']
+```
+
+### train_tokenizer.py 동작 원리
+
+```python
+from tokenizers import Tokenizer
+from tokenizers.models import BPE
+from tokenizers.trainers import BpeTrainer
+
+# 1. BPE 토크나이저 생성
+tokenizer = Tokenizer(BPE(unk_token="[UNK]"))
+
+# 2. 트레이너 설정 (어휘 크기 24,000)
+trainer = BpeTrainer(
+    vocab_size=24000,
+    special_tokens=["[PAD]", "[UNK]", "[BOS]", "[EOS]"]
+)
+
+# 3. samples.txt로 학습
+tokenizer.train(["data/samples.txt"], trainer)
+
+# 4. 저장
+tokenizer.save("data/tokenizer.json")
+```
+
+---
+
+## GPT의 다음 토큰 예측
+
+### 흔한 오해
+
+> "GPT가 임베딩 벡터들 중에서 가장 비슷한 벡터를 찾아서 다음 단어를 예측한다" ❌
+
+### 실제 방식
+
+GPT는 **벡터 검색이 아닌 수학적 연산**으로 다음 토큰을 예측합니다.
+
+```
+입력: "나는 밥을"
+         ↓
+[임베딩] → 벡터로 변환
+         ↓
+[Transformer × 6] → 문맥 이해
+         ↓
+[출력 헤드] → 24,000개 토큰의 확률 분포
+         ↓
+[샘플링] → 다음 토큰 선택
+
+결과: "먹었다" (확률 35%)
+```
+
+### 비교 표
+
+| | 벡터 검색 (RAG) | GPT 다음 토큰 예측 |
+|---|---|---|
+| **방식** | 코사인 유사도로 비슷한 벡터 찾기 | Transformer 연산 후 확률 분포 생성 |
+| **용도** | 외부 문서/지식 검색 | 언어 모델 내부 예측 |
+| **출력** | 유사한 문서/벡터 | vocab_size 크기의 확률 분포 |
+
+### 핵심 차이
+
+- **유사도 검색**: "비슷한 것 찾기" (검색)
+- **확률 분포**: "다음에 올 것 예측" (생성)
+
+📚 참고: [embedding-and-prediction.md](faq/embedding-and-prediction.md), [training.md](faq/training.md)

@@ -15,20 +15,48 @@ JAI(Job AI) 프로젝트의 핵심 개념을 쉽게 설명합니다.
 | [sample-data.md](faq/sample-data.md) | 샘플 데이터는 실제 구인 정보여야 하는가? |
 | [sample-data-strategy.md](faq/sample-data-strategy.md) | 샘플 데이터 구성 전략 (DB 필드, 변환 규칙, 코드) |
 
+### 환경 설정
+
+| 문서 | 설명 |
+|------|------|
+| [environment-setup.md](faq/environment-setup.md) | 개발 환경 설정 (uv, MPS, PyTorch) |
+| [project-structure.md](faq/project-structure.md) | 프로젝트 구조 및 실행 순서 |
+
+### 데이터 준비
+
+| 문서 | 설명 |
+|------|------|
+| [data-preparation.md](faq/data-preparation.md) | 학습 데이터 형식 및 전처리 |
+
 ### 토큰화
 
 | 문서 | 설명 |
 |------|------|
 | [why-tokenize.md](faq/why-tokenize.md) | 왜 토큰화를 해야 하는가? |
 | [how-to-tokenize.md](faq/how-to-tokenize.md) | 토큰화를 하는 방법 (외부 라이브러리) |
+| [bpe-algorithm.md](faq/bpe-algorithm.md) | BPE 알고리즘 원리 및 학습 |
 | [vocab-size.md](faq/vocab-size.md) | vocab_size란 무엇인가? |
 | [after-tokenize.md](faq/after-tokenize.md) | 토큰화 다음에는 무엇을 해야 하는가? |
+
+### 모델 구조
+
+| 문서 | 설명 |
+|------|------|
+| [embedding-and-prediction.md](faq/embedding-and-prediction.md) | 임베딩 → 다음 토큰 예측 (벡터 검색과의 차이) |
+| [model-architecture.md](faq/model-architecture.md) | GPT 아키텍처 (Attention, MLP, Block) |
+
+### 학습 및 배포
+
+| 문서 | 설명 |
+|------|------|
+| [training.md](faq/training.md) | 모델 학습 (Next-token prediction) |
+| [generation.md](faq/generation.md) | 텍스트 생성 (Temperature, Top-K) |
+| [server.md](faq/server.md) | API 서버 구축 (FastAPI, 데몬) |
 
 ### 심화 학습
 
 | 문서 | 설명 |
 |------|------|
-| [embedding-and-prediction.md](faq/embedding-and-prediction.md) | 토큰화 → 임베딩 → 다음 토큰 예측 (벡터 검색과의 차이) |
 | [core-concepts.md](faq/core-concepts.md) | 핵심 개념 9가지 |
 | [troubleshooting.md](faq/troubleshooting.md) | 트러블슈팅 |
 
@@ -74,12 +102,6 @@ uv run python scripts/generate.py             # 텍스트 생성
 | Sampling | 확률 분포에서 토큰 선택 |
 
 ---
-
-## 참고 문서
-
-- [모델 구조](docs/05-model-architecture.md)
-- [학습 코드](docs/06-training.md)
-- [서버 구축](docs/08-server.md)
 
 ## 참고 자료
 

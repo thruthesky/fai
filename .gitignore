@@ -1,0 +1,5 @@
+checkpoints/
+checkpoints/ckpt.pt
+**/ckpt.pt
+.venv/
+.venv/*

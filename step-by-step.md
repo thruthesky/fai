@@ -97,15 +97,55 @@ jai/
 
 ## 5단계: 데이터 준비
 
+학습용 샘플 데이터를 준비합니다. 두 가지 방법 중 선택할 수 있습니다.
+
+### 방법 A: 텍스트 파일에서 변환
+
 `data/raw.txt`에 원본 구인/구직 데이터를 준비합니다.
 
 ```bash
 uv run python scripts/prepare_samples.py
 ```
 
-**결과**: `data/samples.txt` 생성
+### 방법 B: JSON 파일에서 변환 (권장)
 
-> 📚 **참고**: [03-data-preparation.md](docs/03-data-preparation.md) - 데이터 전처리
+구인 정보가 담긴 JSON 파일을 샘플 데이터로 변환합니다.
+
+```bash
+uv run python scripts/convert_jobs_to_samples.py
+```
+
+**입력**: `data/jobs-sg.json` (구인 정보 JSON)
+**출력**: `data/samples.txt` (학습용 샘플)
+
+### 샘플 데이터 형식
+
+```
+[QUESTION]
+이 연락처 정보를 이해하기 쉽게 요약해줘.
+[/QUESTION]
+
+[DOC]
+=== [회사명] 포지션 채용 ===
+회사명: ...
+포지션: ...
+위치: ...
+[/DOC]
+
+[ANSWER]
+요약:
+- 회사: ...
+- 포지션: ...
+
+체크리스트:
+- 해야 할 일: ...
+
+연락처(공공정보):
+- WEB: ...
+[/ANSWER]
+```
+
+> 📚 **참고**: [03-data-preparation.md](docs/03-data-preparation.md) - 데이터 전처리 | [job-hiring.md](docs/job-hiring.md) - 구인 정보 필드
 
 ---
 
@@ -199,10 +239,51 @@ uv add torch tokenizers tqdm numpy
 mkdir -p data scripts checkpoints
 
 # 2. 순차 실행
-uv run python scripts/prepare_samples.py
-uv run python scripts/train_tokenizer.py
-uv run python scripts/build_bin_dataset.py
-uv run python scripts/train_gpt.py
-uv run python scripts/generate.py
+uv run python scripts/convert_jobs_to_samples.py  # JSON → samples.txt
+uv run python scripts/train_tokenizer.py           # BPE 토크나이저 학습
+uv run python scripts/build_bin_dataset.py         # 바이너리 변환
+uv run python scripts/train_gpt.py                 # GPT 모델 학습
+uv run python scripts/generate.py                  # 텍스트 생성
+```
+
+---
+
+## 전체 파이프라인 도식
+
+```
+[데이터 준비]
+    jobs-sg.json (구인 정보 JSON)
+         ↓
+    convert_jobs_to_samples.py
+         ↓
+    samples.txt (학습용 텍스트)
+
+[토크나이저 학습]
+    samples.txt
+         ↓
+    train_tokenizer.py (BPE 알고리즘)
+         ↓
+    tokenizer.json (어휘 사전: 24,000개 토큰)
+
+[바이너리 변환]
+    samples.txt + tokenizer.json
+         ↓
+    build_bin_dataset.py
+         ↓
+    train.bin, val.bin (숫자 배열)
+
+[GPT 학습]
+    train.bin + val.bin
+         ↓
+    train_gpt.py (임베딩 + Transformer)
+         ↓
+    checkpoints/ckpt.pt (학습된 모델)
+
+[텍스트 생성]
+    ckpt.pt + tokenizer.json
+         ↓
+    generate.py
+         ↓
+    "서울에서 React 개발자를 채용합니다..."
 ```
 
