@@ -1,19 +1,14 @@
 ---
 name: search-skill
 description: Dart/Flutter 공식 문서 사이트를 크롤링하여 data/raw/ 폴더에 Markdown으로 저장하는 스킬. 다음 상황에서 사용: (1) "/search <사이트>" 또는 "/search <URL>" 명령 실행 시, (2) dart.dev, docs.flutter.dev 등 공식 문서 수집 요청 시, (3) Stage 1 데이터 수집 작업 시.
-context: fork
-argument-hint: JSON
-disable-model-invocation: false
-allowed-tools: Read, Grep, Web Search, Web Fetch, Bash
 user-invocable: true
-license: Complete terms in LICENSE.txt
 ---
 
 # Dart/Flutter 문서 수집 스킬 (Stage 1)
 
 ## 목적
 
-FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. 공식 문서 사이트를 크롤링하여 URL 경로 구조 그대로 `data/raw/` 폴더에 Markdown으로 저장한다.
+FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. WebFetch와 WebSearch 도구를 사용하여 공식 문서 사이트를 크롤링하고, URL 경로 구조 그대로 `data/raw/` 폴더에 Markdown으로 저장한다.
 
 ---
 
@@ -68,38 +63,82 @@ FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. 공식 문서 사�
 
 ## 실행 절차
 
-### 1단계: 사이트맵 또는 네비게이션 분석
+### 1단계: 시드 URL 목록 생성
 
-WebFetch로 메인 페이지에서 모든 내부 링크 수집:
+`extract_data.py --sitemap` 명령으로 도메인별 크롤링 시작점 URL 목록을 생성한다:
 
-```
-1. 메인 페이지 fetch
-2. 사이드바/네비게이션에서 모든 링크 추출
-3. 중복 제거 및 외부 링크 필터링
-4. 수집할 URL 목록 생성
+```bash
+python3 .claude/skills/search-skill/scripts/extract_data.py --sitemap dart.dev
 ```
 
-### 2단계: 각 페이지 수집
+### 2단계: WebFetch로 각 페이지 수집
 
-각 URL에 대해:
+각 URL에 대해 WebFetch 도구로 콘텐츠를 가져온다:
 
 ```
-1. WebFetch로 페이지 내용 가져오기
-2. HTML → Markdown 변환
-3. URL 경로에 맞는 폴더 구조 생성
-4. .md 파일로 저장
+WebFetch: https://dart.dev/language/variables
+Prompt: "이 페이지의 전체 내용을 마크다운 형식으로 추출해줘. 코드 예시와 설명을 모두 포함해."
 ```
 
-### 3단계: 메타데이터 추가
+### 3단계: extract_data.py로 저장
 
-각 파일 끝에 출처 정보 추가:
+WebFetch 결과를 `extract_data.py`로 저장한다:
 
-```markdown
+```bash
+# 단일 페이지 저장
+python3 .claude/skills/search-skill/scripts/extract_data.py \
+  --url "https://dart.dev/language/variables" \
+  --content "WebFetch 결과..." \
+  --output data/raw
+
+# 또는 JSON으로 배치 처리
+echo '[{"url": "...", "content": "..."}]' | \
+  python3 .claude/skills/search-skill/scripts/extract_data.py --output data/raw
+```
+
+### 4단계: 수집 현황 확인
+
+```bash
+# 전체 현황
+python3 .claude/skills/search-skill/scripts/extract_data.py --status --output data/raw
+
+# 특정 도메인 현황
+python3 .claude/skills/search-skill/scripts/extract_data.py --status --domain dart.dev --output data/raw
+```
+
 ---
 
-## Source
-- URL: https://dart.dev/language/variables
-- Fetched: 2024-01-27
+## extract_data.py 스크립트
+
+### 주요 기능
+
+| 옵션 | 설명 |
+|------|------|
+| `--url, -u` | 저장할 페이지 URL |
+| `--content, -c` | 페이지 콘텐츠 (마크다운) |
+| `--title, -t` | 페이지 제목 (선택) |
+| `--input, -i` | 입력 JSON 파일 (- for stdin) |
+| `--output, -o` | 출력 기본 디렉토리 (기본: data/raw) |
+| `--sitemap, -s` | 도메인의 시드 URL 목록 생성 |
+| `--status` | 수집 현황 표시 |
+| `--domain, -d` | 특정 도메인 필터 |
+| `--links` | 콘텐츠에서 링크 추출 |
+| `--json` | JSON 형식으로 출력 |
+
+### 사용 예시
+
+```bash
+# 시드 URL 목록 생성
+python3 extract_data.py --sitemap dart.dev
+
+# 단일 페이지 저장
+python3 extract_data.py --url "https://dart.dev/language" --content "..." --output data/raw
+
+# stdin에서 JSON 입력
+echo '{"url": "...", "content": "..."}' | python3 extract_data.py --output data/raw
+
+# 수집 현황 (미수집 URL 포함)
+python3 extract_data.py --status --domain dart.dev --json --output data/raw
 ```
 
 ---
@@ -128,9 +167,21 @@ void main() {
 ---
 
 ## Source
-- URL: https://dart.dev/language/variables
-- Fetched: 2024-01-27
+
+- **URL**: https://dart.dev/language/variables
+- **Fetched**: 2024-01-27
 ```
+
+---
+
+## 크롤링 워크플로우 (Claude 실행)
+
+1. **시드 URL 확인**: `--sitemap` 또는 `--status --domain`으로 수집할 URL 목록 확인
+2. **반복 크롤링**: 각 URL에 대해:
+   - WebFetch로 콘텐츠 가져오기
+   - extract_data.py로 저장
+3. **링크 발견**: WebFetch 결과에서 새 링크 발견 시 추가 수집
+4. **진행 상황 확인**: `--status`로 수집 현황 확인
 
 ---
 
@@ -143,43 +194,27 @@ void main() {
 
 ---
 
-## dart.dev 크롤링 예시 (우선 수집 대상)
+## 지원 도메인 URL 목록
 
-### 주요 섹션
+### dart.dev (60+ URLs)
 
-| 섹션 | URL 패턴 | 예상 파일 수 |
-|------|----------|-------------|
-| Language | `/language/*` | ~30 |
-| Libraries | `/libraries/*` | ~20 |
-| Tutorials | `/tutorials/*` | ~15 |
-| Effective Dart | `/effective-dart/*` | ~10 |
-| Tools | `/tools/*` | ~25 |
+주요 섹션: `/language/*`, `/libraries/*`, `/tutorials/*`, `/effective-dart/*`, `/tools/*`
 
-### 크롤링 실행
+### docs.flutter.dev (45+ URLs)
 
-```
-/search dart.dev
-```
+주요 섹션: `/get-started/*`, `/ui/*`, `/development/*`, `/testing/*`, `/deployment/*`
 
-**예상 결과:**
-```
-data/raw/dart.dev/
-├── index.md
-├── overview.md
-├── language.md
-├── language/
-│   ├── variables.md
-│   ├── operators.md
-│   ├── functions.md
-│   ├── classes.md
-│   └── ...
-├── libraries.md
-├── libraries/
-│   ├── dart-core.md
-│   ├── dart-async.md
-│   └── ...
-└── ...
-```
+### api.flutter.dev (30+ URLs)
+
+주요 클래스: `StatelessWidget`, `StatefulWidget`, `Container`, `Text`, `Row`, `Column`, Material/Cupertino 위젯
+
+### api.dart.dev (15+ URLs)
+
+주요 라이브러리: `dart-core`, `dart-async`, `dart-collection`, `dart-convert`, `dart-io`
+
+### pub.dev (25+ URLs)
+
+인기 패키지: `provider`, `bloc`, `riverpod`, `dio`, `hive`, `firebase_*` 등
 
 ---
 
