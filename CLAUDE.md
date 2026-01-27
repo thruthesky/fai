@@ -8,12 +8,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-JAI (Job AI)는 전 세계 구인/구직 정보를 제공하는 Job LLM을 처음부터(from scratch) 구현하는 학습 프로젝트입니다. 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 직접 구현합니다.
+FAI (Flutter AI)는 Dart와 Flutter 개발 학습 정보를 제공하는 소규모 스터디 LLM을 처음부터(from scratch) 구현하는 학습 프로젝트입니다. 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 직접 구현합니다.
+
+- **공식 명칭**: FAI
+- **분류**: Flutter Study GPT, Flutter LM, Dart/Flutter Learning Model
 
 ## 프로젝트 구조
 
 ```
-jai/
+fai/
 ├── data/
 │   ├── raw.txt              # 원본 데이터
 │   ├── samples.txt          # 전처리된 학습 샘플
@@ -36,7 +39,7 @@ jai/
 │   └── 08-server.md
 ├── faq/                     # FAQ 문서 (개념별 분리)
 │   ├── data-flow.md
-│   ├── why-job-llm.md
+│   ├── why-flutter-llm.md
 │   ├── sample-data.md
 │   ├── why-tokenize.md
 │   ├── how-to-tokenize.md
@@ -80,22 +83,23 @@ data/raw.txt → scripts/prepare_samples.py → samples.txt → 토큰화 → tr
 ### 학습 데이터 형식
 ```
 [QUESTION]
-질문 내용
+Flutter/Dart 관련 질문 내용
 [/QUESTION]
 
 [DOC]
-원문 내용
+공식 문서 또는 학습 자료 원문
 [/DOC]
 
 [ANSWER]
 요약:
 - ...
-체크리스트:
-- ...
-구인 정보:
-- 회사: ...
-- 포지션: ...
-- 연봉: ...
+학습 체크리스트:
+- 선수 지식: ...
+- 학습 목표: ...
+코드 예시:
+- 클래스명: ...
+- 주요 메서드: ...
+- 참고 링크: ...
 상세 설명:
 ...
 [/ANSWER]
@@ -134,7 +138,7 @@ data/raw.txt → scripts/prepare_samples.py → samples.txt → 토큰화 → tr
 | 문서 | 설명 |
 |------|------|
 | `faq/data-flow.md` | 데이터 흐름 파이프라인 |
-| `faq/why-job-llm.md` | 구인 정보 LLM 필요성 |
+| `faq/why-flutter-llm.md` | Flutter 스터디 LLM 필요성 |
 | `faq/sample-data.md` | 샘플 데이터 요구사항 |
 | `faq/why-tokenize.md` | 토큰화 이유 |
 | `faq/how-to-tokenize.md` | 토큰화 방법 (외부 라이브러리) |

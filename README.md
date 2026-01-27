@@ -1,16 +1,17 @@
-# JAI (Job AI)
+# FAI (Flutter AI)
 
-**JAI(Job AI)**는 실제 채용 공고 데이터를 기반으로, 구인 특화 LLM을 처음부터 학습하여 요약·정리·추천형 응답을 생성하는 프로젝트입니다.
+**FAI(Flutter AI)**는 Dart와 Flutter 개발 학습 자료를 기반으로, Flutter 스터디 특화 LLM을 처음부터 학습하여 개념 설명·코드 예시·학습 가이드형 응답을 생성하는 프로젝트입니다.
 
-- **공식 명칭**: JAI
-- **기술적 분류 명칭**: JobGPT, Job AI, Job GPT, Job AI LLM, Job-specialized LLM
-- **전체적 의미**: 구인 도메인에 특화된 LLM 기반 AI
+- **공식 명칭**: FAI
+- **기술적 분류 명칭**: Flutter Study GPT, Flutter LM, Flutter AI, Dart/Flutter Learning Model
+- **전체적 의미**: Dart/Flutter 개발 학습에 특화된 소규모 LLM 기반 AI
 
 ## 프로젝트 목표
 
 - **100% 직접 구현**: 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 처음부터 학습
-- **요약/정리형 출력**: 체크리스트, 구인/구직 정보, 상세 설명을 구조화된 형식으로 생성
+- **학습 가이드형 출력**: 개념 설명, 코드 예시, 학습 체크리스트를 구조화된 형식으로 생성
 - **Mac M4 최적화**: MPS(Metal Performance Shaders) GPU 가속 지원
+- **소규모 스터디 모델**: 대규모 LLM이 아닌, Dart/Flutter 학습 정보 제공에 특화된 경량 모델
 
 ## 단계별 가이드
 
@@ -37,7 +38,7 @@ uv run python scripts/generate.py             # 텍스트 생성
 ## 프로젝트 구조
 
 ```
-jai/
+fai/
 ├── data/                    # 데이터 디렉토리
 │   ├── raw.txt              # 원본 데이터
 │   ├── samples.txt          # 전처리된 학습 샘플
@@ -73,7 +74,7 @@ jai/
 | [05-model-architecture.md](docs/05-model-architecture.md) | GPT 모델 아키텍처, 코드 |
 | [06-training.md](docs/06-training.md) | 학습 루프, 체크포인트 |
 | [07-generation.md](docs/07-generation.md) | 텍스트 생성, 샘플링 파라미터 |
-| [08-server.md](docs/08-server.md) | JAI LLM 서버, API, 데몬 실행 |
+| [08-server.md](docs/08-server.md) | FAI LLM 서버, API, 데몬 실행 |
 
 ### FAQ 문서 (faq/)
 
@@ -81,7 +82,7 @@ jai/
 
 | 카테고리 | 문서 |
 |----------|------|
-| **프로젝트 개요** | [data-flow.md](faq/data-flow.md), [why-job-llm.md](faq/why-job-llm.md), [sample-data.md](faq/sample-data.md), [sample-data-strategy.md](faq/sample-data-strategy.md) |
+| **프로젝트 개요** | [data-flow.md](faq/data-flow.md), [why-flutter-llm.md](faq/why-flutter-llm.md), [sample-data.md](faq/sample-data.md), [sample-data-strategy.md](faq/sample-data-strategy.md) |
 | **환경 설정** | [environment-setup.md](faq/environment-setup.md), [project-structure.md](faq/project-structure.md) |
 | **데이터 준비** | [data-preparation.md](faq/data-preparation.md) |
 | **토큰화** | [why-tokenize.md](faq/why-tokenize.md), [how-to-tokenize.md](faq/how-to-tokenize.md), [bpe-algorithm.md](faq/bpe-algorithm.md), [vocab-size.md](faq/vocab-size.md), [after-tokenize.md](faq/after-tokenize.md) |
@@ -95,7 +96,7 @@ jai/
 2. **Embedding**: 토큰 ID → 고차원 벡터
 3. **Self-Attention**: 문맥 내 단어 간 관계 학습
 4. **Next-token Prediction**: GPT의 유일한 학습 목표
-5. **데이터 포맷 = 모델 능력**: 구인/구직 데이터로 학습하면 구인/구직 정보 출력
+5. **데이터 포맷 = 모델 능력**: Dart/Flutter 학습 데이터로 학습하면 개발 학습 정보 출력
 
 ## 권장 하이퍼파라미터 (M4 기준)
 
@@ -113,26 +114,25 @@ jai/
 ```
 [ANSWER]
 요약:
-- 미국 실리콘밸리 소프트웨어 엔지니어 채용 정보
-- 지원 마감: 2024-12-31
+- Flutter의 StatefulWidget 개념과 생명주기 설명
+- 상태 관리의 기본 원리 이해
 
-체크리스트:
-- 지원 자격:
-  - (1) CS 학위 또는 관련 경력 3년 이상
-  - (2) Python, JavaScript 능숙
-- 준비물:
-  - (1) 이력서 (영문)
-  - (2) 포트폴리오
+학습 체크리스트:
+- 선수 지식:
+  - (1) Dart 기본 문법 이해
+  - (2) 객체지향 프로그래밍 개념
+- 학습 목표:
+  - (1) StatefulWidget과 StatelessWidget의 차이 이해
+  - (2) setState() 사용법 숙지
 
-구인 정보:
-- Google Inc.
-  - 포지션: Senior Software Engineer
-  - 연봉: $150,000 - $200,000
-  - 위치: Mountain View, CA
-  - WEB: https://careers.google.com/
+코드 예시:
+- StatefulWidget 기본 구조
+  - 클래스: MyStatefulWidget extends StatefulWidget
+  - 상태 클래스: _MyStatefulWidgetState extends State
+  - 참고: https://docs.flutter.dev/
 
 상세 설명:
-...
+StatefulWidget은 변경 가능한 상태를 가진 위젯입니다...
 [/ANSWER]
 ```
 
@@ -141,3 +141,5 @@ jai/
 - [build-nanogpt](https://github.com/karpathy/build-nanogpt) - Karpathy의 GPT 구현 튜토리얼
 - [Hugging Face Tokenizers](https://huggingface.co/docs/tokenizers/) - BPE 토크나이저 문서
 - [PyTorch MPS](https://pytorch.org/docs/stable/notes/mps.html) - Mac GPU 가속 문서
+- [Flutter 공식 문서](https://docs.flutter.dev/) - Flutter 개발 공식 가이드
+- [Dart 공식 문서](https://dart.dev/guides) - Dart 언어 공식 가이드
