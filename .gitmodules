@@ -1,0 +1,3 @@
+[submodule ".claude/skills/skill-creator"]
+	path = .claude/skills/skill-creator
+	url = https://github.com/thruthesky/skill-creator
