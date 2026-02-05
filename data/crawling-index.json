@@ -1,0 +1,1433 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-01-27T11:53:34.752200+00:00",
+  "settings": {
+    "max_age_days": 30,
+    "auto_refresh": true
+  },
+  "urls": {
+    "https://dart.dev/overview": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/overview.md",
+      "first_crawled": "2026-01-27T19:43:08.570829Z",
+      "last_crawled": "2026-01-27T19:43:08.570829Z",
+      "crawl_count": 1,
+      "content_hash": "45a4f9afcaa5296baadabc7da371d655",
+      "file_size": 2800,
+      "error": null
+    },
+    "https://dart.dev/community": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/community.md",
+      "first_crawled": "2026-01-27T19:43:08.571060Z",
+      "last_crawled": "2026-01-27T19:43:08.571060Z",
+      "crawl_count": 1,
+      "content_hash": "76c9dbfe11144346cd5712bc78fea1d2",
+      "file_size": 1808,
+      "error": null
+    },
+    "https://dart.dev/codelabs": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/codelabs.md",
+      "first_crawled": "2026-01-27T19:43:08.571247Z",
+      "last_crawled": "2026-01-27T19:43:08.571247Z",
+      "crawl_count": 1,
+      "content_hash": "e89ea9f76fc6df40bdbdcde1f3f46bcb",
+      "file_size": 1600,
+      "error": null
+    },
+    "https://dart.dev/tutorials": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tutorials.md",
+      "first_crawled": "2026-01-27T19:43:08.571406Z",
+      "last_crawled": "2026-01-27T19:43:08.571406Z",
+      "crawl_count": 1,
+      "content_hash": "46c7aebd3452b5353b508f3488628f52",
+      "file_size": 1824,
+      "error": null
+    },
+    "https://dart.dev/": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/index.md",
+      "first_crawled": "2026-01-27T19:43:08.571573Z",
+      "last_crawled": "2026-01-27T19:43:08.571573Z",
+      "crawl_count": 1,
+      "content_hash": "889d95ddec38d6b235e12999480b42c3",
+      "file_size": 1669,
+      "error": null
+    },
+    "https://dart.dev/null-safety": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/null-safety.md",
+      "first_crawled": "2026-01-27T19:43:08.571750Z",
+      "last_crawled": "2026-01-27T19:43:08.571750Z",
+      "crawl_count": 1,
+      "content_hash": "116661e1ddb41e11e43f2366eb10eb14",
+      "file_size": 1697,
+      "error": null
+    },
+    "https://dart.dev/effective-dart": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/effective-dart.md",
+      "first_crawled": "2026-01-27T19:43:08.571963Z",
+      "last_crawled": "2026-01-27T19:43:08.571963Z",
+      "crawl_count": 1,
+      "content_hash": "502c3d53c13f6b1591e3d7659e4a2393",
+      "file_size": 4413,
+      "error": null
+    },
+    "https://dart.dev/libraries": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries.md",
+      "first_crawled": "2026-01-27T19:43:08.572109Z",
+      "last_crawled": "2026-01-27T19:43:08.572109Z",
+      "crawl_count": 1,
+      "content_hash": "7783962c81e881ecb5b65d891bf9cf30",
+      "file_size": 2625,
+      "error": null
+    },
+    "https://dart.dev/tools": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools.md",
+      "first_crawled": "2026-01-27T19:43:08.572328Z",
+      "last_crawled": "2026-01-27T19:43:08.572328Z",
+      "crawl_count": 1,
+      "content_hash": "02f21c8170ce5b1c7eb17dd98c121e13",
+      "file_size": 2032,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-pub": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-pub.md",
+      "first_crawled": "2026-01-27T19:43:08.572996Z",
+      "last_crawled": "2026-01-27T19:43:08.572996Z",
+      "crawl_count": 1,
+      "content_hash": "1088090c81047c96d07a215ef3c7cd11",
+      "file_size": 2900,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-run": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-run.md",
+      "first_crawled": "2026-01-27T19:43:08.573135Z",
+      "last_crawled": "2026-01-27T19:43:08.573135Z",
+      "crawl_count": 1,
+      "content_hash": "843495c9f3e62df04c37228342ae79f2",
+      "file_size": 1789,
+      "error": null
+    },
+    "https://dart.dev/tools/dartaotruntime": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dartaotruntime.md",
+      "first_crawled": "2026-01-27T19:43:08.573218Z",
+      "last_crawled": "2026-01-27T19:43:08.573218Z",
+      "crawl_count": 1,
+      "content_hash": "3c9cdc39a60ab8bdb9a389bce4615366",
+      "file_size": 1378,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-info": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-info.md",
+      "first_crawled": "2026-01-27T19:43:08.573295Z",
+      "last_crawled": "2026-01-27T19:43:08.573295Z",
+      "crawl_count": 1,
+      "content_hash": "7630fa26b7b19e9b8ed3c2bffcfac5d5",
+      "file_size": 1587,
+      "error": null
+    },
+    "https://dart.dev/tools/dartdevc": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dartdevc.md",
+      "first_crawled": "2026-01-27T19:43:08.573369Z",
+      "last_crawled": "2026-01-27T19:43:08.573369Z",
+      "crawl_count": 1,
+      "content_hash": "95c2c543098240d4ab2f5a8f406b1432",
+      "file_size": 1294,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-create": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-create.md",
+      "first_crawled": "2026-01-27T19:43:08.573447Z",
+      "last_crawled": "2026-01-27T19:43:08.573447Z",
+      "crawl_count": 1,
+      "content_hash": "097c4cf73b2ca70c67d3c2ff4c3c6abd",
+      "file_size": 1737,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-compile": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-compile.md",
+      "first_crawled": "2026-01-27T19:43:08.573620Z",
+      "last_crawled": "2026-01-27T19:43:08.573620Z",
+      "crawl_count": 1,
+      "content_hash": "ea50ecdca28d664fe40cf601b802d930",
+      "file_size": 5389,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-format": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-format.md",
+      "first_crawled": "2026-01-27T19:43:08.573770Z",
+      "last_crawled": "2026-01-27T19:43:08.573770Z",
+      "crawl_count": 1,
+      "content_hash": "3da235acdd515edad31ea50151967524",
+      "file_size": 2430,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-test": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-test.md",
+      "first_crawled": "2026-01-27T19:43:08.573908Z",
+      "last_crawled": "2026-01-27T19:43:08.573908Z",
+      "crawl_count": 1,
+      "content_hash": "8c0f8e4d48ccd634db15cd218dd0cc4f",
+      "file_size": 1550,
+      "error": null
+    },
+    "https://dart.dev/tools/pub": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/pub.md",
+      "first_crawled": "2026-01-27T19:43:08.574055Z",
+      "last_crawled": "2026-01-27T19:43:08.574055Z",
+      "crawl_count": 1,
+      "content_hash": "363df3cdd6a8fd2a1c3c8636965ff471",
+      "file_size": 2292,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-fix": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-fix.md",
+      "first_crawled": "2026-01-27T19:43:08.574192Z",
+      "last_crawled": "2026-01-27T19:43:08.574192Z",
+      "crawl_count": 1,
+      "content_hash": "fa93e6f981c29cb7afdf3111f7d4d712",
+      "file_size": 2193,
+      "error": null
+    },
+    "https://dart.dev/tools/dart-doc": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tools/dart-doc.md",
+      "first_crawled": "2026-01-27T19:43:08.574330Z",
+      "last_crawled": "2026-01-27T19:43:08.574330Z",
+      "crawl_count": 1,
+      "content_hash": "3282523036dac6d7bff4165e10ea2453",
+      "file_size": 3058,
+      "error": null
+    },
+    "https://dart.dev/resources/books": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/resources/books.md",
+      "first_crawled": "2026-01-27T19:43:08.574509Z",
+      "last_crawled": "2026-01-27T19:43:08.574509Z",
+      "crawl_count": 1,
+      "content_hash": "acd4f629d4750001fe347cd34f4f9bdc",
+      "file_size": 1524,
+      "error": null
+    },
+    "https://dart.dev/null-safety/understanding-null-safety": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/null-safety/understanding-null-safety.md",
+      "first_crawled": "2026-01-27T19:43:08.574716Z",
+      "last_crawled": "2026-01-27T19:43:08.574716Z",
+      "crawl_count": 1,
+      "content_hash": "162e05f47789d3e0697286288ba43bea",
+      "file_size": 7196,
+      "error": null
+    },
+    "https://dart.dev/null-safety/migration-guide": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/null-safety/migration-guide.md",
+      "first_crawled": "2026-01-27T19:43:08.574907Z",
+      "last_crawled": "2026-01-27T19:43:08.574907Z",
+      "crawl_count": 1,
+      "content_hash": "6071ce3f2382fe33e2a353d6c8bef47d",
+      "file_size": 4104,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-io": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-io.md",
+      "first_crawled": "2026-01-27T19:43:08.575077Z",
+      "last_crawled": "2026-01-27T19:43:08.575077Z",
+      "crawl_count": 1,
+      "content_hash": "fa30c4a9c31f59a53414d4839836e1e3",
+      "file_size": 4035,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-convert": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-convert.md",
+      "first_crawled": "2026-01-27T19:43:08.575164Z",
+      "last_crawled": "2026-01-27T19:43:08.575164Z",
+      "crawl_count": 1,
+      "content_hash": "784fe1994b33e08407f973a3692ca0c8",
+      "file_size": 2851,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-math": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-math.md",
+      "first_crawled": "2026-01-27T19:43:08.575292Z",
+      "last_crawled": "2026-01-27T19:43:08.575292Z",
+      "crawl_count": 1,
+      "content_hash": "84e7a1eeb325af3c76c305caf3d4d965",
+      "file_size": 1626,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-core": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-core.md",
+      "first_crawled": "2026-01-27T19:43:08.575505Z",
+      "last_crawled": "2026-01-27T19:43:08.575505Z",
+      "crawl_count": 1,
+      "content_hash": "6160e9fe0765441b58e26ef44d38b7e5",
+      "file_size": 11602,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-html": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-html.md",
+      "first_crawled": "2026-01-27T19:43:08.575651Z",
+      "last_crawled": "2026-01-27T19:43:08.575651Z",
+      "crawl_count": 1,
+      "content_hash": "94cb1e21d3f70c2c7281948b9fb4d89c",
+      "file_size": 3553,
+      "error": null
+    },
+    "https://dart.dev/libraries/dart-async": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/libraries/dart-async.md",
+      "first_crawled": "2026-01-27T19:43:08.575825Z",
+      "last_crawled": "2026-01-27T19:43:08.575825Z",
+      "crawl_count": 1,
+      "content_hash": "0e7f34a7cfa819905adaa3ca76e1c8d4",
+      "file_size": 4936,
+      "error": null
+    },
+    "https://dart.dev/language/typedefs": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/typedefs.md",
+      "first_crawled": "2026-01-27T19:43:08.575968Z",
+      "last_crawled": "2026-01-27T19:43:08.575968Z",
+      "crawl_count": 1,
+      "content_hash": "2f94f0ef719834a99d6dcaf5c37927d5",
+      "file_size": 1483,
+      "error": null
+    },
+    "https://dart.dev/language/type-system": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/type-system.md",
+      "first_crawled": "2026-01-27T19:43:08.576212Z",
+      "last_crawled": "2026-01-27T19:43:08.576212Z",
+      "crawl_count": 1,
+      "content_hash": "4f25c3e60c0d8fb0fecd84152d2a4c94",
+      "file_size": 4569,
+      "error": null
+    },
+    "https://dart.dev/language/loops": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/loops.md",
+      "first_crawled": "2026-01-27T19:43:08.576461Z",
+      "last_crawled": "2026-01-27T19:43:08.576461Z",
+      "crawl_count": 1,
+      "content_hash": "fd865c4d3a595275ffba42d5ccc8b744",
+      "file_size": 3301,
+      "error": null
+    },
+    "https://dart.dev/language/collections": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/collections.md",
+      "first_crawled": "2026-01-27T19:43:08.576574Z",
+      "last_crawled": "2026-01-27T19:43:08.576574Z",
+      "crawl_count": 1,
+      "content_hash": "428a19302fd867aa4f6cd781e37351f1",
+      "file_size": 6588,
+      "error": null
+    },
+    "https://dart.dev/language/constructors": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/constructors.md",
+      "first_crawled": "2026-01-27T19:43:08.576895Z",
+      "last_crawled": "2026-01-27T19:43:08.576895Z",
+      "crawl_count": 1,
+      "content_hash": "31d8146e0025a1232b0e31b3e3b0748f",
+      "file_size": 4670,
+      "error": null
+    },
+    "https://dart.dev/language/generics": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/generics.md",
+      "first_crawled": "2026-01-27T19:43:08.577072Z",
+      "last_crawled": "2026-01-27T19:43:08.577072Z",
+      "crawl_count": 1,
+      "content_hash": "ede927d1caeeeb2b607f334b5353f73c",
+      "file_size": 2841,
+      "error": null
+    },
+    "https://dart.dev/language/extension-methods": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/extension-methods.md",
+      "first_crawled": "2026-01-27T19:43:08.577162Z",
+      "last_crawled": "2026-01-27T19:43:08.577162Z",
+      "crawl_count": 1,
+      "content_hash": "cc4155219214788a1f353b8a10be2e6e",
+      "file_size": 3444,
+      "error": null
+    },
+    "https://dart.dev/language/modifier-reference": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/modifier-reference.md",
+      "first_crawled": "2026-01-27T19:43:08.577245Z",
+      "last_crawled": "2026-01-27T19:43:08.577245Z",
+      "crawl_count": 1,
+      "content_hash": "6d9e636a98f1efaa4cfc2b2ea09797df",
+      "file_size": 1917,
+      "error": null
+    },
+    "https://dart.dev/language/extension-types": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/extension-types.md",
+      "first_crawled": "2026-01-27T19:43:08.577339Z",
+      "last_crawled": "2026-01-27T19:43:08.577339Z",
+      "crawl_count": 1,
+      "content_hash": "b7c4d9f5c384b5e2e71cd11d78445901",
+      "file_size": 5366,
+      "error": null
+    },
+    "https://dart.dev/language/comments": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/comments.md",
+      "first_crawled": "2026-01-27T19:43:08.577423Z",
+      "last_crawled": "2026-01-27T19:43:08.577423Z",
+      "crawl_count": 1,
+      "content_hash": "90ec634d9b351bf495d735af8d9de29a",
+      "file_size": 2122,
+      "error": null
+    },
+    "https://dart.dev/language/async": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/async.md",
+      "first_crawled": "2026-01-27T19:43:08.577566Z",
+      "last_crawled": "2026-01-27T19:43:08.577566Z",
+      "crawl_count": 1,
+      "content_hash": "2c4cc73803e57e7f1d88a172c4d1caf4",
+      "file_size": 3155,
+      "error": null
+    },
+    "https://dart.dev/language/classes": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/classes.md",
+      "first_crawled": "2026-01-27T19:43:08.577648Z",
+      "last_crawled": "2026-01-27T19:43:08.577648Z",
+      "crawl_count": 1,
+      "content_hash": "8f7e804fb6e9b92ee43fd9edcd887228",
+      "file_size": 5033,
+      "error": null
+    },
+    "https://dart.dev/language/operators": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/operators.md",
+      "first_crawled": "2026-01-27T19:43:08.577751Z",
+      "last_crawled": "2026-01-27T19:43:08.577751Z",
+      "crawl_count": 1,
+      "content_hash": "d9954a208f9aa2bf90afecbebc3c2ff3",
+      "file_size": 6696,
+      "error": null
+    },
+    "https://dart.dev/language/patterns": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/patterns.md",
+      "first_crawled": "2026-01-27T19:43:08.577833Z",
+      "last_crawled": "2026-01-27T19:43:08.577833Z",
+      "crawl_count": 1,
+      "content_hash": "0765c48e4fc114aed72bee60c3a89859",
+      "file_size": 5474,
+      "error": null
+    },
+    "https://dart.dev/language/branches": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/branches.md",
+      "first_crawled": "2026-01-27T19:43:08.577910Z",
+      "last_crawled": "2026-01-27T19:43:08.577910Z",
+      "crawl_count": 1,
+      "content_hash": "49df3c14d2c13379cbfef688d75ac45b",
+      "file_size": 3642,
+      "error": null
+    },
+    "https://dart.dev/language/metadata": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/metadata.md",
+      "first_crawled": "2026-01-27T19:43:08.577998Z",
+      "last_crawled": "2026-01-27T19:43:08.577998Z",
+      "crawl_count": 1,
+      "content_hash": "cc8cd8bbf13885ee120ccfb30b3b7aa8",
+      "file_size": 2607,
+      "error": null
+    },
+    "https://dart.dev/language/methods": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/methods.md",
+      "first_crawled": "2026-01-27T19:43:08.578087Z",
+      "last_crawled": "2026-01-27T19:43:08.578087Z",
+      "crawl_count": 1,
+      "content_hash": "2d4b844179f1dcd7ba11e86d3d6089fc",
+      "file_size": 2212,
+      "error": null
+    },
+    "https://dart.dev/language/isolates": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/isolates.md",
+      "first_crawled": "2026-01-27T19:43:08.578195Z",
+      "last_crawled": "2026-01-27T19:43:08.578195Z",
+      "crawl_count": 1,
+      "content_hash": "7784ced6f0b7ece390b44556925ee8c2",
+      "file_size": 6937,
+      "error": null
+    },
+    "https://dart.dev/language/class-modifiers": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/class-modifiers.md",
+      "first_crawled": "2026-01-27T19:43:08.578362Z",
+      "last_crawled": "2026-01-27T19:43:08.578362Z",
+      "crawl_count": 1,
+      "content_hash": "fa0b4ea172d8708509870715ee82c788",
+      "file_size": 2928,
+      "error": null
+    },
+    "https://dart.dev/language/functions": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/functions.md",
+      "first_crawled": "2026-01-27T19:43:08.578474Z",
+      "last_crawled": "2026-01-27T19:43:08.578474Z",
+      "crawl_count": 1,
+      "content_hash": "41b441e0a8643922d581686646e23474",
+      "file_size": 7502,
+      "error": null
+    },
+    "https://dart.dev/language/control-flow": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/control-flow.md",
+      "first_crawled": "2026-01-27T19:43:08.578556Z",
+      "last_crawled": "2026-01-27T19:43:08.578556Z",
+      "crawl_count": 1,
+      "content_hash": "ea953706e47fcc5bcb74f02dc15c69cc",
+      "file_size": 3112,
+      "error": null
+    },
+    "https://dart.dev/language/enums": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/enums.md",
+      "first_crawled": "2026-01-27T19:43:08.578715Z",
+      "last_crawled": "2026-01-27T19:43:08.578715Z",
+      "crawl_count": 1,
+      "content_hash": "4d0b6829e01442cfe6a0f01a8beb9162",
+      "file_size": 2768,
+      "error": null
+    },
+    "https://dart.dev/language/mixins": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/mixins.md",
+      "first_crawled": "2026-01-27T19:43:08.578898Z",
+      "last_crawled": "2026-01-27T19:43:08.578898Z",
+      "crawl_count": 1,
+      "content_hash": "f0d21c9a4c944b8948739a5a44db4303",
+      "file_size": 3364,
+      "error": null
+    },
+    "https://dart.dev/language/callable-objects": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/callable-objects.md",
+      "first_crawled": "2026-01-27T19:43:08.578979Z",
+      "last_crawled": "2026-01-27T19:43:08.578979Z",
+      "crawl_count": 1,
+      "content_hash": "e0b429af18e8565ad1a2d197b844766a",
+      "file_size": 1300,
+      "error": null
+    },
+    "https://dart.dev/language/error-handling": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/error-handling.md",
+      "first_crawled": "2026-01-27T19:43:08.579063Z",
+      "last_crawled": "2026-01-27T19:43:08.579063Z",
+      "crawl_count": 1,
+      "content_hash": "6ddabfea896d7443dadd2b0f3f151a63",
+      "file_size": 2318,
+      "error": null
+    },
+    "https://dart.dev/language/libraries": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/libraries.md",
+      "first_crawled": "2026-01-27T19:43:08.579143Z",
+      "last_crawled": "2026-01-27T19:43:08.579143Z",
+      "crawl_count": 1,
+      "content_hash": "f9563810045681f347c86370247668a5",
+      "file_size": 2256,
+      "error": null
+    },
+    "https://dart.dev/language/extend": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/extend.md",
+      "first_crawled": "2026-01-27T19:43:08.579221Z",
+      "last_crawled": "2026-01-27T19:43:08.579221Z",
+      "crawl_count": 1,
+      "content_hash": "f3e1cf5ec16fcd8bc39585712f2c354b",
+      "file_size": 1900,
+      "error": null
+    },
+    "https://dart.dev/language/variables": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/variables.md",
+      "first_crawled": "2026-01-27T19:43:08.579302Z",
+      "last_crawled": "2026-01-27T19:43:08.579302Z",
+      "crawl_count": 1,
+      "content_hash": "c10a5685579c6c1882a148eff5def58b",
+      "file_size": 3089,
+      "error": null
+    },
+    "https://dart.dev/language/built-in-types": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/built-in-types.md",
+      "first_crawled": "2026-01-27T19:43:08.579994Z",
+      "last_crawled": "2026-01-27T19:43:08.579994Z",
+      "crawl_count": 1,
+      "content_hash": "b065432c0cc7a2a4a63e27296c981473",
+      "file_size": 4282,
+      "error": null
+    },
+    "https://dart.dev/language/concurrency": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/concurrency.md",
+      "first_crawled": "2026-01-27T19:43:08.580094Z",
+      "last_crawled": "2026-01-27T19:43:08.580094Z",
+      "crawl_count": 1,
+      "content_hash": "aafb9ae84169cbc6cb39027e728d3fb7",
+      "file_size": 4322,
+      "error": null
+    },
+    "https://dart.dev/language/records": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/records.md",
+      "first_crawled": "2026-01-27T19:43:08.580312Z",
+      "last_crawled": "2026-01-27T19:43:08.580312Z",
+      "crawl_count": 1,
+      "content_hash": "6f0ac0e280ca0346f9ac019165d873aa",
+      "file_size": 2933,
+      "error": null
+    },
+    "https://dart.dev/language/keywords": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/keywords.md",
+      "first_crawled": "2026-01-27T19:43:08.580538Z",
+      "last_crawled": "2026-01-27T19:43:08.580538Z",
+      "crawl_count": 1,
+      "content_hash": "558e21a720512ea10ee706f874ac0e87",
+      "file_size": 1748,
+      "error": null
+    },
+    "https://dart.dev/effective-dart/usage": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/effective-dart/usage.md",
+      "first_crawled": "2026-01-27T19:43:08.580655Z",
+      "last_crawled": "2026-01-27T19:43:08.580655Z",
+      "crawl_count": 1,
+      "content_hash": "bc8a1ceae6b3c2ef250c210620565445",
+      "file_size": 2509,
+      "error": null
+    },
+    "https://dart.dev/effective-dart/style": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/effective-dart/style.md",
+      "first_crawled": "2026-01-27T19:43:08.580723Z",
+      "last_crawled": "2026-01-27T19:43:08.580723Z",
+      "crawl_count": 1,
+      "content_hash": "2cf49e28f523525b279878223532974a",
+      "file_size": 2647,
+      "error": null
+    },
+    "https://dart.dev/effective-dart/documentation": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/effective-dart/documentation.md",
+      "first_crawled": "2026-01-27T19:43:08.580786Z",
+      "last_crawled": "2026-01-27T19:43:08.580786Z",
+      "crawl_count": 1,
+      "content_hash": "ed42ec91d5b02d36c98ab34690b7f974",
+      "file_size": 1718,
+      "error": null
+    },
+    "https://dart.dev/effective-dart/design": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/effective-dart/design.md",
+      "first_crawled": "2026-01-27T19:43:08.580890Z",
+      "last_crawled": "2026-01-27T19:43:08.580890Z",
+      "crawl_count": 1,
+      "content_hash": "bc496b61e3a62e9d28bab72a9361ddcd",
+      "file_size": 3713,
+      "error": null
+    },
+    "https://dart.dev/tutorials/web": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tutorials/web.md",
+      "first_crawled": "2026-01-27T19:43:08.581105Z",
+      "last_crawled": "2026-01-27T19:43:08.581105Z",
+      "crawl_count": 1,
+      "content_hash": "54e4535512879daf8c33d0755ea49f77",
+      "file_size": 2827,
+      "error": null
+    },
+    "https://dart.dev/tutorials/server": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/tutorials/server.md",
+      "first_crawled": "2026-01-27T19:43:08.581214Z",
+      "last_crawled": "2026-01-27T19:43:08.581214Z",
+      "crawl_count": 1,
+      "content_hash": "171f688028b8a3f72b35323f71f11024",
+      "file_size": 1643,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "220b941661267e43a1f5f81be6dbbf16",
+      "file_size": 1625,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "ed101aa821d142a46c704ca8bf759b7f",
+      "file_size": 1615,
+      "error": null
+    },
+    "https://dart-tutorial.com/dart-functions/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "f42f808a3d86815b46c9a03b734117f2",
+      "file_size": 1442,
+      "error": null
+    },
+    "https://dart-tutorial.com/collections/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "ef49e79b2e956c7adfdd6f0687138424",
+      "file_size": 1053,
+      "error": null
+    },
+    "https://dart-tutorial.com/file-handling-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/file-handling-in-dart/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "845b21c4007fbea25bccaee823767c10",
+      "file_size": 1478,
+      "error": null
+    },
+    "https://dart-tutorial.com/object-oriented-programming/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "76b7d1cb6417ea7b92129a39589781b3",
+      "file_size": 1803,
+      "error": null
+    },
+    "https://dart-tutorial.com/null-safety/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/null-safety/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "4a7b87ac9b690b8a1cee20f4ae0837b3",
+      "file_size": 1059,
+      "error": null
+    },
+    "https://dart-tutorial.com/asynchronous-programming/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/asynchronous-programming/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "1d13dcb68bd6e58cba136f76336baf5d",
+      "file_size": 1415,
+      "error": null
+    },
+    "https://dart-tutorial.com/useful-information/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/useful-information/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "f8d61919f62661bb51be81979900e659",
+      "file_size": 1517,
+      "error": null
+    },
+    "https://dart-tutorial.com/dart-how-to/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-how-to/index.md",
+      "first_crawled": "2026-01-27T11:46:21.057691Z",
+      "last_crawled": "2026-01-27T11:46:21.057691Z",
+      "crawl_count": 1,
+      "content_hash": "eee51913c2437e79dc702582728e34be",
+      "file_size": 1677,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/introduction-to-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/introduction-to-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "eb567b42557c9a551e3c1c0add8321a6",
+      "file_size": 3611,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/dart-install/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/dart-install.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "181b334ee6b69138723c657a82ac2297",
+      "file_size": 3052,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/basic-dart-program/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/basic-dart-program.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "ffc530de7fa3e513e9af8f6e0f9d98ea",
+      "file_size": 2467,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/variables-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/variables-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "408275e301f0f93db1ab1cf1eae4dc3b",
+      "file_size": 2146,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/datatypes-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/datatypes-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "dedfa9bcfaece0a525ddc151a2afd518",
+      "file_size": 4251,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/comments-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/comments-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "0d535f387539c7e7850221acc36b47e1",
+      "file_size": 1530,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/operators-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/operators-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "337d943ef2e1d39ea59daee9a9d87f8d",
+      "file_size": 5162,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/user-input-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/user-input-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "962fe47eedf1162037dc24b92925a755",
+      "file_size": 1710,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/string-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/string-in-dart.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "2b848169182efb8f1d0ef40418773a51",
+      "file_size": 3770,
+      "error": null
+    },
+    "https://dart-tutorial.com/introduction-and-basics/questions-for-practice-1/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/introduction-and-basics/questions-for-practice-1.md",
+      "first_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "last_crawled": "2026-01-27T11:49:59.039944+00:00",
+      "crawl_count": 1,
+      "content_hash": "5d7f5bd54321e3a205204724de2ce5eb",
+      "file_size": 1930,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/conditions-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/conditions-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "c8d6e676a0b5c750ca576af76691b141",
+      "file_size": 3471,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/assert-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/assert-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "3131ef7f93f870fa0a58a99ae22f6fac",
+      "file_size": 1458,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/switch-case-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/switch-case-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "099f490a044ba9b628a4e1262f76cb24",
+      "file_size": 3969,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/ternary-operator-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/ternary-operator-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "ee1450928e02801eb48ccb457e155b57",
+      "file_size": 1743,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/loops-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/loops-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "8e4e1fb380d824eb411769f07e1323ce",
+      "file_size": 1631,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/for-loop-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/for-loop-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "27d2e7257e619f78567dc5520744399f",
+      "file_size": 2356,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/for-each-loop-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/for-each-loop-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "81910083334eb41d381befa26e79826d",
+      "file_size": 2338,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/while-loop-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/while-loop-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "e63c2e25d78ff0e4673df6b99de83c27",
+      "file_size": 1986,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/do-while-loop-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/do-while-loop-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "0792ef9bb9d48b4c4d527bf785f49937",
+      "file_size": 1565,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/break-and-continue-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/break-and-continue-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "f6a5fbcb1778d0398324547ae59a92ef",
+      "file_size": 3648,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/exception_handeling-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/exception-handling-in-dart.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "94cb8196917c1973c2b6e28fe0a5e2c6",
+      "file_size": 4163,
+      "error": null
+    },
+    "https://dart-tutorial.com/conditions-and-loops/questions-for-practice-2/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conditions-and-loops/questions-for-practice-2.md",
+      "first_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "last_crawled": "2026-01-27T11:53:34.752200+00:00",
+      "crawl_count": 1,
+      "content_hash": "f2357d001c825e4207683057aedb4041",
+      "file_size": 1453,
+      "error": null
+    },
+    "https://dart-tutorial.com/dart-functions/functions-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/functions-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "f24296f0000b255cc9c6e3b67f365833",
+      "file_size": 2430
+    },
+    "https://dart-tutorial.com/dart-functions/types-of-functions-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/types-of-functions-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "7b26c3baa8250b0e1851aa48ce514ed6",
+      "file_size": 3958
+    },
+    "https://dart-tutorial.com/dart-functions/function-parameter-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/function-parameter-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "e7184bc4ed3d1e47d5fb13b1e5dcb52d",
+      "file_size": 4668
+    },
+    "https://dart-tutorial.com/dart-functions/anonymous-function-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/anonymous-function-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "e7762fc590dd44f20f72cb407791391e",
+      "file_size": 1662
+    },
+    "https://dart-tutorial.com/dart-functions/arrow-function-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/arrow-function-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "acdba836e8afa3a711f93bf4b945af37",
+      "file_size": 2172
+    },
+    "https://dart-tutorial.com/dart-functions/scope-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/scope-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "55472b56aa240987eca5cea94a328308",
+      "file_size": 1558
+    },
+    "https://dart-tutorial.com/dart-functions/math-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/math-in-dart.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "7a2f45f82c928cab48a217a8ec4129c8",
+      "file_size": 3007
+    },
+    "https://dart-tutorial.com/dart-functions/questions-for-practice-3/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/dart-functions/questions-for-practice-3.md",
+      "last_fetched": "2026-01-27T11:56:42.271099+00:00",
+      "last_updated": "2026-01-27T11:56:42.271099+00:00",
+      "content_hash": "7933f7ecfebc241df665235f26222b12",
+      "file_size": 1546
+    },
+    "https://dart-tutorial.com/collections/list-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/list-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "5b7d7517007316a3f3d73e08678d425d",
+      "file_size": 6097
+    },
+    "https://dart-tutorial.com/collections/set-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/set-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "e4d432f179b9fc4fb24b6380d48a0a75",
+      "file_size": 4863
+    },
+    "https://dart-tutorial.com/collections/map-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/map-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "e271604c455dd6b0124cd62495ddea3b",
+      "file_size": 5915
+    },
+    "https://dart-tutorial.com/collections/where-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/where-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "6d87718c43b305150f88382c55d7f275",
+      "file_size": 2204
+    },
+    "https://dart-tutorial.com/collections/questions-for-practice-4/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/collections/questions-for-practice-4.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "0f2793e1af663c8ce24b80a3d0a45ff2",
+      "file_size": 2215
+    },
+    "https://dart-tutorial.com/file-handling-in-dart/read-file-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/file-handling-in-dart/read-file-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "1bc541dea990590546fabe958f7c51e7",
+      "file_size": 3090
+    },
+    "https://dart-tutorial.com/file-handling-in-dart/write-file-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/file-handling-in-dart/write-file-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "3168e1a54cae995263c931433b8c7bde",
+      "file_size": 2453
+    },
+    "https://dart-tutorial.com/file-handling-in-dart/delete-file-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/file-handling-in-dart/delete-file-in-dart.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "8f52a16409e020b61bc4e8a33aa74f99",
+      "file_size": 1507
+    },
+    "https://dart-tutorial.com/file-handling-in-dart/questions-for-practice-5/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/file-handling-in-dart/questions-for-practice-5.md",
+      "last_fetched": "2026-01-27T12:00:08.416968+00:00",
+      "last_updated": "2026-01-27T12:00:08.416968+00:00",
+      "content_hash": "08d9bade5cb34eb5af2ebf4b850731d5",
+      "file_size": 2091
+    },
+    "https://dart-tutorial.com/object-oriented-programming/oop-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/oop-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "7fc6ca6017936c1b7cc1d136f0b50fd5",
+      "file_size": 1492
+    },
+    "https://dart-tutorial.com/object-oriented-programming/class-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/class-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "7f9aa62b5600ec429ea34044278ce8f3",
+      "file_size": 2033
+    },
+    "https://dart-tutorial.com/object-oriented-programming/object-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/object-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "c6e3c61e6f8e165969314a27801ddebf",
+      "file_size": 2513
+    },
+    "https://dart-tutorial.com/object-oriented-programming/class-and-objects-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/class-and-objects-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "21a9583a51b99c4a2e0c910742b79769",
+      "file_size": 2150
+    },
+    "https://dart-tutorial.com/object-oriented-programming/constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "867907a23547c0b6b66f5e7e4b0814ec",
+      "file_size": 2003
+    },
+    "https://dart-tutorial.com/object-oriented-programming/default-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/default-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "f6cba93b9722acf1b4440553751f7a49",
+      "file_size": 1727
+    },
+    "https://dart-tutorial.com/object-oriented-programming/parameterized-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/parameterized-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "43b82a48a8028d7f0dd20d221927ef76",
+      "file_size": 2378
+    },
+    "https://dart-tutorial.com/object-oriented-programming/named-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/named-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "a9a37560d17c604f2a9e871f4b80c98b",
+      "file_size": 4069
+    },
+    "https://dart-tutorial.com/object-oriented-programming/constant-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/constant-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "ba41168462c905579f8276ef965e3403",
+      "file_size": 1928
+    },
+    "https://dart-tutorial.com/object-oriented-programming/encapsulation-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/encapsulation-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "16ad9120d4fdb05fcbdfa03925a3569b",
+      "file_size": 3375
+    },
+    "https://dart-tutorial.com/object-oriented-programming/getter-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/getter-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "258ccfee1106d90d4f62eccb7e1cfcef",
+      "file_size": 2406
+    },
+    "https://dart-tutorial.com/object-oriented-programming/setter-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/setter-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "27606bba0c0f5e74ef2e2b17ada76115",
+      "file_size": 2138
+    },
+    "https://dart-tutorial.com/object-oriented-programming/getter-and-setter-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/getter-and-setter-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "a5adf1feaa96fb38d91f50a433661b09",
+      "file_size": 2916
+    },
+    "https://dart-tutorial.com/object-oriented-programming/inheritance-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/inheritance-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "41dd7e16f23c4bbed64fbe271a9b9bda",
+      "file_size": 2668
+    },
+    "https://dart-tutorial.com/object-oriented-programming/inheritance-of-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/inheritance-of-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "092da14ce5324c2aac280de606d12595",
+      "file_size": 2782
+    },
+    "https://dart-tutorial.com/object-oriented-programming/super-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/super-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "e4bb84dba7de3d27241d2d9174b0e48d",
+      "file_size": 3104
+    },
+    "https://dart-tutorial.com/object-oriented-programming/polymorphism-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/polymorphism-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "a7a0923ceb78d95683e68eef5f05337b",
+      "file_size": 2207
+    },
+    "https://dart-tutorial.com/object-oriented-programming/static-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/static-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "e5ea5fec5c95da9c56677f3255979ba4",
+      "file_size": 3975
+    },
+    "https://dart-tutorial.com/object-oriented-programming/enum-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/enum-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "6fce68debb69348ba71125fbeebd286c",
+      "file_size": 2900
+    },
+    "https://dart-tutorial.com/object-oriented-programming/abstract-class-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/abstract-class-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "be3a4bce7fc2c200a012a080bb423728",
+      "file_size": 3808
+    },
+    "https://dart-tutorial.com/object-oriented-programming/interface-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/interface-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "331b89d0242ac3cc7f16481d849724cf",
+      "file_size": 2863
+    },
+    "https://dart-tutorial.com/object-oriented-programming/mixins-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/mixins-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "08c95392a4c5d5bb5dcbcfbafc239411",
+      "file_size": 2584
+    },
+    "https://dart-tutorial.com/object-oriented-programming/factory-constructor-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/factory-constructor-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "e9e6bbb58837eb54673388cc9a95eaca",
+      "file_size": 3821
+    },
+    "https://dart-tutorial.com/object-oriented-programming/generics-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/generics-in-dart.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "d00f0d76da0027e397e0dbc2ba4eeeab",
+      "file_size": 3562
+    },
+    "https://dart-tutorial.com/object-oriented-programming/questions-for-practice-6/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/object-oriented-programming/questions-for-practice-6.md",
+      "last_fetched": "2026-01-27T12:06:41.092048+00:00",
+      "last_updated": "2026-01-27T12:06:41.092048+00:00",
+      "content_hash": "adc0cb1ac3e5b0dcd74da4cdc22c441d",
+      "file_size": 1571
+    },
+    "https://dart-tutorial.com/null-safety/null-safety-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/null-safety/null-safety-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "a603eeb30aa3710a2fcfc9b2d75e00aa",
+      "file_size": 3396
+    },
+    "https://dart-tutorial.com/null-safety/type-promotion-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/null-safety/type-promotion-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "9cb6bc5a36757319469eff1525c6a1ee",
+      "file_size": 2295
+    },
+    "https://dart-tutorial.com/null-safety/late-keyword-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/null-safety/late-keyword-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "ae0af59d70eba082318fddfb9b17d8ee",
+      "file_size": 3748
+    },
+    "https://dart-tutorial.com/asynchronous-programming/asynchronous-programming-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/asynchronous-programming/asynchronous-programming-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "918196557e2ed08effeba862469a492d",
+      "file_size": 2386
+    },
+    "https://dart-tutorial.com/asynchronous-programming/future-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/asynchronous-programming/future-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "066c87eaaf45a0d3a8600fd4c2da0184",
+      "file_size": 1831
+    },
+    "https://dart-tutorial.com/asynchronous-programming/async-and-await-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/asynchronous-programming/async-and-await-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "2c62d5a5c73c3f642513957a2587bb30",
+      "file_size": 2255
+    },
+    "https://dart-tutorial.com/asynchronous-programming/stream-in-dart/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/asynchronous-programming/stream-in-dart.md",
+      "last_fetched": "2026-01-27T12:09:31.498112+00:00",
+      "last_updated": "2026-01-27T12:09:31.498112+00:00",
+      "content_hash": "2835548c64b0bb851c41e29385bb135a",
+      "file_size": 6526
+    },
+    "https://dart-tutorial.com/quiz/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/quiz/index.md",
+      "last_fetched": "2026-01-27T12:11:48.926849+00:00",
+      "last_updated": "2026-01-27T12:11:48.926849+00:00",
+      "content_hash": "3061917e0e7c1e617558ea749d4ae6d7",
+      "file_size": 847
+    },
+    "https://dart-tutorial.com/conclusion/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/conclusion/index.md",
+      "last_fetched": "2026-01-27T12:11:48.926849+00:00",
+      "last_updated": "2026-01-27T12:11:48.926849+00:00",
+      "content_hash": "dbd2a4098643192be8f3bd1281ef1cfb",
+      "file_size": 1430
+    },
+    "https://dart-tutorial.com/certificate/": {
+      "status": "completed",
+      "file_path": "data/raw/dart-tutorial.com/certificate/index.md",
+      "last_fetched": "2026-01-27T12:11:48.926849+00:00",
+      "last_updated": "2026-01-27T12:11:48.926849+00:00",
+      "content_hash": "fbb24bcf9cf673a3ebb41ed5c62bf48c",
+      "file_size": 1526
+    }
+  },
+  "statistics": {
+    "total_urls": 100,
+    "completed": 100,
+    "failed": 0,
+    "pending": 0,
+    "total_size_bytes": 294522
+  }
+}

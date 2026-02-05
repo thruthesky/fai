@@ -1,37 +1,55 @@
 ---
 name: search-skill
-description: Dart/Flutter 공식 문서 사이트를 크롤링하여 data/raw/ 폴더에 Markdown으로 저장하는 스킬. 다음 상황에서 사용: (1) "/search <사이트>" 또는 "/search <URL>" 명령 실행 시, (2) dart.dev, docs.flutter.dev 등 공식 문서 수집 요청 시, (3) Stage 1 데이터 수집 작업 시.
+description: Crawl Dart/Flutter official documentation sites and save as Markdown files in data/raw/ folder. IMPORTANT - All content must be fetched and saved in ENGLISH ONLY. Use this skill when (1) "/search <site>" or "/search <URL>" command is executed, (2) collecting official docs from dart.dev, docs.flutter.dev, etc., (3) Stage 1 data collection tasks.
 user-invocable: true
 ---
 
-# Dart/Flutter 문서 수집 스킬 (Stage 1)
+# Dart/Flutter Documentation Collection Skill (Stage 1)
 
-## 목적
+## Purpose
 
-FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. WebFetch와 WebSearch 도구를 사용하여 공식 문서 사이트를 크롤링하고, URL 경로 구조 그대로 `data/raw/` 폴더에 Markdown으로 저장한다.
-
----
-
-## 사용법
-
-```
-/search <사이트명>          # 사이트 전체 크롤링
-/search <URL>               # 특정 페이지만 수집
-```
-
-**예시:**
-```
-/search dart.dev            # dart.dev 전체 크롤링
-/search docs.flutter.dev    # Flutter 문서 전체 크롤링
-/search https://dart.dev/language/variables   # 특정 페이지만
-```
+Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch tools to crawl official documentation sites and save as Markdown files in `data/raw/` folder, preserving the URL path structure.
 
 ---
 
-## URL → 파일 경로 매핑 규칙
+## ⚠️ CRITICAL: English-Only Data Rule ⚠️
 
-| URL | 저장 경로 |
-|-----|----------|
+**All data MUST be searched and saved in English only.**
+
+| Rule | Description |
+|------|-------------|
+| **Search Language** | Always search and fetch content in **English** |
+| **Save Language** | All Markdown files must be written in **English** |
+| **WebFetch Prompt** | Use **English prompts** when fetching pages |
+| **File Content** | No Korean or other languages in saved `.md` files |
+
+**Why English only?**
+- LLM training data should be consistent in language
+- Official Dart/Flutter documentation is primarily in English
+- Ensures uniform tokenization during model training
+
+---
+
+## Usage
+
+```
+/search <site>              # Crawl entire site
+/search <URL>               # Fetch specific page only
+```
+
+**Examples:**
+```
+/search dart.dev            # Crawl all of dart.dev
+/search docs.flutter.dev    # Crawl Flutter documentation
+/search https://dart.dev/language/variables   # Specific page only
+```
+
+---
+
+## URL → File Path Mapping Rules
+
+| URL | Save Path |
+|-----|-----------|
 | `https://dart.dev/` | `data/raw/dart.dev/index.md` |
 | `https://dart.dev/overview` | `data/raw/dart.dev/overview.md` |
 | `https://dart.dev/language` | `data/raw/dart.dev/language.md` |
@@ -40,20 +58,20 @@ FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. WebFetch와 WebSea
 | `https://docs.flutter.dev/ui/widgets` | `data/raw/docs.flutter.dev/ui/widgets.md` |
 | `https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html` | `data/raw/api.flutter.dev/flutter/widgets/StatefulWidget-class.md` |
 
-**변환 규칙:**
-1. `https://` 제거
-2. 도메인을 최상위 폴더로 사용
-3. URL 경로를 하위 폴더/파일로 변환
-4. `.html` 확장자는 `.md`로 변경
-5. 경로 끝이 `/`이면 `index.md`로 저장
+**Conversion Rules:**
+1. Remove `https://`
+2. Use domain as top-level folder
+3. Convert URL path to subfolders/files
+4. Change `.html` extension to `.md`
+5. If path ends with `/`, save as `index.md`
 
 ---
 
-## 수집 대상 사이트
+## Target Sites
 
-| 사이트 | 명령어 | 저장 경로 | 우선순위 |
-|--------|--------|----------|----------|
-| dart.dev | `/search dart.dev` | `data/raw/dart.dev/` | 1 (최우선) |
+| Site | Command | Save Path | Priority |
+|------|---------|-----------|----------|
+| dart.dev | `/search dart.dev` | `data/raw/dart.dev/` | 1 (Highest) |
 | docs.flutter.dev | `/search docs.flutter.dev` | `data/raw/docs.flutter.dev/` | 2 |
 | api.flutter.dev | `/search api.flutter.dev` | `data/raw/api.flutter.dev/` | 3 |
 | api.dart.dev | `/search api.dart.dev` | `data/raw/api.dart.dev/` | 4 |
@@ -61,94 +79,162 @@ FAI 프로젝트의 Stage 1 데이터 수집을 담당한다. WebFetch와 WebSea
 
 ---
 
-## 실행 절차
+## Execution Procedure
 
-### 1단계: 시드 URL 목록 생성
+### Step 1: Generate Seed URL List
 
-`extract_data.py --sitemap` 명령으로 도메인별 크롤링 시작점 URL 목록을 생성한다:
+Generate seed URL list for each domain using `extract_data.py --sitemap`:
 
 ```bash
 python3 .claude/skills/search-skill/scripts/extract_data.py --sitemap dart.dev
 ```
 
-### 2단계: WebFetch로 각 페이지 수집
+### Step 2: Fetch Each Page with WebFetch
 
-각 URL에 대해 WebFetch 도구로 콘텐츠를 가져온다:
+Fetch content for each URL using WebFetch tool.
+
+**⚠️ IMPORTANT: Always use English prompts:**
 
 ```
 WebFetch: https://dart.dev/language/variables
-Prompt: "이 페이지의 전체 내용을 마크다운 형식으로 추출해줘. 코드 예시와 설명을 모두 포함해."
+Prompt: "Extract the complete content of this page in Markdown format. Include all code examples and explanations in English."
 ```
 
-### 3단계: extract_data.py로 저장
+### Step 3: Save and Update Index
 
-WebFetch 결과를 `extract_data.py`로 저장한다:
+**⚠️ CRITICAL: After fetching EACH page, you MUST:**
+
+1. **Save the Markdown file** to `data/raw/<domain>/<path>.md`
+2. **Immediately update `data/crawling-index.json`** with the crawl status
+
+**DO NOT skip the index update!** The crawling index must be updated after every single page fetch to:
+- Track which URLs have been collected
+- Prevent duplicate crawling
+- Enable resume from interruption
+- Record timestamps and file paths
+
+### Step 4: Save with extract_data.py
+
+Save WebFetch results using `extract_data.py`:
 
 ```bash
-# 단일 페이지 저장
+# Save single page
 python3 .claude/skills/search-skill/scripts/extract_data.py \
   --url "https://dart.dev/language/variables" \
-  --content "WebFetch 결과..." \
+  --content "WebFetch result..." \
   --output data/raw
 
-# 또는 JSON으로 배치 처리
+# Or batch process with JSON
 echo '[{"url": "...", "content": "..."}]' | \
   python3 .claude/skills/search-skill/scripts/extract_data.py --output data/raw
 ```
 
-### 4단계: 수집 현황 확인
+### Step 4: Check Collection Status
 
 ```bash
-# 전체 현황
+# Overall status
 python3 .claude/skills/search-skill/scripts/extract_data.py --status --output data/raw
 
-# 특정 도메인 현황
+# Status for specific domain
 python3 .claude/skills/search-skill/scripts/extract_data.py --status --domain dart.dev --output data/raw
 ```
 
 ---
 
-## extract_data.py 스크립트
+## extract_data.py Script
 
-### 주요 기능
+### Main Options
 
-| 옵션 | 설명 |
-|------|------|
-| `--url, -u` | 저장할 페이지 URL |
-| `--content, -c` | 페이지 콘텐츠 (마크다운) |
-| `--title, -t` | 페이지 제목 (선택) |
-| `--input, -i` | 입력 JSON 파일 (- for stdin) |
-| `--output, -o` | 출력 기본 디렉토리 (기본: data/raw) |
-| `--sitemap, -s` | 도메인의 시드 URL 목록 생성 |
-| `--status` | 수집 현황 표시 |
-| `--domain, -d` | 특정 도메인 필터 |
-| `--links` | 콘텐츠에서 링크 추출 |
-| `--json` | JSON 형식으로 출력 |
+| Option | Description |
+|--------|-------------|
+| `--url, -u` | URL of page to save |
+| `--content, -c` | Page content (Markdown) |
+| `--title, -t` | Page title (optional) |
+| `--input, -i` | Input JSON file (- for stdin) |
+| `--output, -o` | Output base directory (default: data/raw) |
+| `--sitemap, -s` | Generate seed URL list for domain |
+| `--status` | Display collection status |
+| `--domain, -d` | Filter by specific domain |
+| `--links` | Extract links from content |
+| `--json` | Output in JSON format |
 
-### 사용 예시
+### Usage Examples
 
 ```bash
-# 시드 URL 목록 생성
+# Generate seed URL list
 python3 extract_data.py --sitemap dart.dev
 
-# 단일 페이지 저장
+# Save single page
 python3 extract_data.py --url "https://dart.dev/language" --content "..." --output data/raw
 
-# stdin에서 JSON 입력
+# JSON input from stdin
 echo '{"url": "...", "content": "..."}' | python3 extract_data.py --output data/raw
 
-# 수집 현황 (미수집 URL 포함)
+# Collection status (including uncollected URLs)
 python3 extract_data.py --status --domain dart.dev --json --output data/raw
 ```
 
 ---
 
-## 저장 파일 형식
+## Crawling Index (data/crawling-index.json)
+
+Manages crawling state and logs to prevent duplicate crawling and support re-crawling when needed.
+
+### File Structure
+
+```json
+{
+  "version": "1.0",
+  "last_updated": "2024-01-27T10:30:00Z",
+  "settings": {
+    "max_age_days": 30,
+    "auto_refresh": true
+  },
+  "urls": {
+    "https://dart.dev/language/variables": {
+      "status": "completed",
+      "file_path": "data/raw/dart.dev/language/variables.md",
+      "first_crawled": "2024-01-25T08:00:00Z",
+      "last_crawled": "2024-01-27T10:30:00Z",
+      "crawl_count": 2,
+      "content_hash": "a1b2c3d4e5f6...",
+      "file_size": 4523,
+      "error": null
+    }
+  },
+  "statistics": {
+    "total_urls": 150,
+    "completed": 120,
+    "failed": 5,
+    "pending": 25,
+    "total_size_bytes": 2458000
+  }
+}
+```
+
+### Field Descriptions
+
+| Field | Description |
+|-------|-------------|
+| `status` | `pending`, `in_progress`, `completed`, `failed`, `stale` |
+| `file_path` | Path to saved Markdown file |
+| `first_crawled` | First crawl time (ISO 8601) |
+| `last_crawled` | Last crawl time (ISO 8601) |
+| `crawl_count` | Total crawl count |
+| `content_hash` | MD5 hash of content (for change detection) |
+| `file_size` | Saved file size (bytes) |
+| `error` | Error message on failure |
+
+---
+
+## Saved File Format
+
+**⚠️ All content must be in English:**
 
 ```markdown
 # [Page Title]
 
-[원본 문서 내용을 Markdown으로 변환]
+[Original document content converted to Markdown - IN ENGLISH]
 
 ## Overview
 ...
@@ -174,50 +260,74 @@ void main() {
 
 ---
 
-## 크롤링 워크플로우 (Claude 실행)
+## Crawling Workflow (Claude Execution)
 
-1. **시드 URL 확인**: `--sitemap` 또는 `--status --domain`으로 수집할 URL 목록 확인
-2. **반복 크롤링**: 각 URL에 대해:
-   - WebFetch로 콘텐츠 가져오기
-   - extract_data.py로 저장
-3. **링크 발견**: WebFetch 결과에서 새 링크 발견 시 추가 수집
-4. **진행 상황 확인**: `--status`로 수집 현황 확인
+1. **Initialize Index**: Create index with seed URLs on first crawl
+   ```bash
+   python3 extract_data.py --init-index --domain dart.dev
+   ```
+
+2. **Check Crawl Targets**: Query pending/stale URL list
+   ```bash
+   python3 extract_data.py --check-index --domain dart.dev
+   ```
+
+3. **Iterative Crawling**: For each URL:
+   - Check status in index (skip if completed and within max_age)
+   - Fetch content with WebFetch **(English prompt required)**
+   - Save Markdown file to `data/raw/`
+   - **⚠️ IMMEDIATELY update `data/crawling-index.json`** (DO NOT batch updates!)
+
+4. **Link Discovery**: When new links found in WebFetch results:
+   - Add to index as pending if not exists
+   - Continue collection
+
+5. **Check Progress**: Review collection status via index statistics
+   ```bash
+   python3 extract_data.py --status --domain dart.dev
+   ```
+
+6. **Retry Failed URLs**: Check failed URL list and retry
+   ```bash
+   python3 extract_data.py --list-failed --domain dart.dev
+   ```
 
 ---
 
-## 크롤링 주의사항
+## Crawling Guidelines
 
-1. **robots.txt 준수**: 각 사이트의 크롤링 정책 확인
-2. **요청 간격**: 서버 부하 방지를 위해 적절한 딜레이
-3. **중복 방지**: 이미 수집된 파일은 스킵 (덮어쓰기 옵션 제공)
-4. **오류 처리**: 실패한 URL 로깅 및 재시도 로직
+1. **Respect robots.txt**: Check each site's crawling policy
+2. **Request Interval**: Use appropriate delays to prevent server overload
+3. **Prevent Duplicates**: Skip already collected files (overwrite option available)
+4. **Error Handling**: Log failed URLs and implement retry logic
+5. **English Only**: Always fetch and save content in English
 
 ---
 
-## 지원 도메인 URL 목록
+## Supported Domain URL Lists
 
 ### dart.dev (60+ URLs)
 
-주요 섹션: `/language/*`, `/libraries/*`, `/tutorials/*`, `/effective-dart/*`, `/tools/*`
+Main sections: `/language/*`, `/libraries/*`, `/tutorials/*`, `/effective-dart/*`, `/tools/*`
 
 ### docs.flutter.dev (45+ URLs)
 
-주요 섹션: `/get-started/*`, `/ui/*`, `/development/*`, `/testing/*`, `/deployment/*`
+Main sections: `/get-started/*`, `/ui/*`, `/development/*`, `/testing/*`, `/deployment/*`
 
 ### api.flutter.dev (30+ URLs)
 
-주요 클래스: `StatelessWidget`, `StatefulWidget`, `Container`, `Text`, `Row`, `Column`, Material/Cupertino 위젯
+Main classes: `StatelessWidget`, `StatefulWidget`, `Container`, `Text`, `Row`, `Column`, Material/Cupertino widgets
 
 ### api.dart.dev (15+ URLs)
 
-주요 라이브러리: `dart-core`, `dart-async`, `dart-collection`, `dart-convert`, `dart-io`
+Main libraries: `dart-core`, `dart-async`, `dart-collection`, `dart-convert`, `dart-io`
 
 ### pub.dev (25+ URLs)
 
-인기 패키지: `provider`, `bloc`, `riverpod`, `dio`, `hive`, `firebase_*` 등
+Popular packages: `provider`, `bloc`, `riverpod`, `dio`, `hive`, `firebase_*`, etc.
 
 ---
 
-## 관련 스킬
+## Related Skills
 
-- **fai-skill**: Stage 2 (전처리) 및 전체 프로젝트 관리
+- **fai-skill**: Stage 2 (preprocessing) and overall project management
