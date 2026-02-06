@@ -1,15 +1,15 @@
 ---
 name: fai-skill
-description: FAI(Flutter AI) 프로젝트 관리 스킬. Dart/Flutter 학습 전용 소규모 LLM 개발 프로젝트. 다음 상황에서 사용: (1) "/fai" 명령 실행 시, (2) FAI 프로젝트 전반 관리 요청 시, (3) 학습 데이터 준비/처리 요청 시, (4) 모델 학습/생성 관련 작업 시.
+description: FAI(Family AI) 프로젝트 관리 스킬. Dart/Flutter 학습 전용 소규모 LLM 개발 프로젝트. 다음 상황에서 사용: (1) "/fai" 명령 실행 시, (2) FAI 프로젝트 전반 관리 요청 시, (3) 학습 데이터 준비/처리 요청 시, (4) 모델 학습/생성 관련 작업 시, (5) 분산 학습 시스템(distributed training) 관련 작업 시, (6) Coordinator 서버/Worker 클라이언트 개발 시, (7) FedAvg 병합/검증/스케줄링 관련 작업 시.
 ---
 
-# FAI (Flutter AI) 프로젝트 관리 스킬
+# FAI (Family AI) 프로젝트 관리 스킬
 
 ## 프로젝트 개요
 
 FAI는 Dart와 Flutter 개발 학습 정보를 제공하는 소규모 스터디 LLM을 처음부터(from scratch) 구현하는 프로젝트이다.
 
-- **공식 명칭**: FAI (Flutter AI)
+- **공식 명칭**: FAI (Family AI)
 - **분류**: Flutter Study GPT, Flutter LM, Dart/Flutter Learning Model
 - **목적**: 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 직접 구현
 
@@ -174,25 +174,9 @@ fai/
 ├── data/
 │   ├── raw/                      # Stage 1: 원본 Markdown (사이트별)
 │   │   ├── dart.dev/
-│   │   │   ├── index.md
-│   │   │   ├── overview.md
-│   │   │   └── language/
-│   │   │       ├── variables.md
-│   │   │       └── functions.md
 │   │   ├── docs.flutter.dev/
-│   │   │   └── ui/
-│   │   │       └── widgets.md
 │   │   └── api.flutter.dev/
-│   │       └── flutter/
-│   │           └── widgets/
-│   │               └── StatefulWidget-class.md
 │   ├── samples/                  # Stage 2: 전처리된 학습 데이터
-│   │   ├── dart.dev/
-│   │   │   └── language/
-│   │   │       └── variables.txt
-│   │   └── docs.flutter.dev/
-│   │       └── ui/
-│   │           └── widgets.txt
 │   ├── samples.txt               # Stage 3: 통합 학습 데이터
 │   ├── tokenizer.json
 │   ├── train.bin
@@ -201,8 +185,18 @@ fai/
 │   ├── prepare_samples.py        # samples/**/*.txt → samples.txt
 │   ├── train_tokenizer.py
 │   ├── build_bin_dataset.py
-│   ├── train_gpt.py
+│   ├── train_gpt.py              # 단독 학습 (로컬)
 │   └── generate.py
+├── distributed/                   # ★ 분산 학습 시스템
+│   ├── common/                    # 서버+워커 공통 (model, constants, protocol)
+│   ├── server/                    # Coordinator 서버 (FastAPI + FedAvg)
+│   │   ├── routes/                # API 엔드포인트 (15개)
+│   │   └── services/              # heartbeat, merger, validator, scheduler
+│   └── worker/                    # 학습 워커 (CLI + trainer)
+├── docker/                        # Docker Compose 구성
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── distributed-training-plan.md   # 분산 학습 설계 문서 (17섹션)
 ├── checkpoints/
 └── docs/
 ```
@@ -222,6 +216,29 @@ fai/
 
 ---
 
+## 분산 학습 시스템
+
+자발적 참여자들이 GPU/CPU를 제공하여 FAI GPT 모델을 협업 학습하는 FedAvg 기반 비동기 분산 학습 시스템.
+
+**핵심 흐름**: Worker 등록 → 작업 요청 → 체크포인트 다운로드 → 로컬 N스텝 학습 → 가중치 업로드 → FedAvg 병합
+
+**실행 방법**:
+
+```bash
+# Coordinator 서버
+uv run uvicorn distributed.server.app:app --host 0.0.0.0 --port 8000
+
+# 워커 실행
+uv run python -m distributed.worker --name "이름" --server http://localhost:8000
+
+# Docker (서버 + 워커 3대)
+cd docker && docker compose up --scale worker=3
+```
+
+**상세 아키텍처, API 목록, 핵심 코드**: [distributed-training.md](references/distributed-training.md) 참조
+
+---
+
 ## 관련 스킬
 
 - **search-skill**: Stage 1 (정보 수집) 실행용 - `/search <키워드>`
@@ -230,5 +247,7 @@ fai/
 ## 관련 문서
 
 - **기술 문서**: `docs/00-overview.md` ~ `docs/08-server.md`
+- **분산 학습 설계**: `distributed-training-plan.md` (17섹션, ~2100줄)
+- **분산 학습 레퍼런스**: [references/distributed-training.md](references/distributed-training.md)
 - **FAQ**: `faq/` 폴더 내 개별 문서
 - **학습 가이드**: `study.md`, `step-by-step.md`

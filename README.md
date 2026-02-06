@@ -1,17 +1,78 @@
-# FAI (Flutter AI)
+# FAI (Family AI)
 
-**FAI(Flutter AI)**는 Dart와 Flutter 개발 학습 자료를 기반으로, Flutter 스터디 특화 LLM을 처음부터 학습하여 개념 설명·코드 예시·학습 가이드형 응답을 생성하는 프로젝트입니다.
+**FAI(Family AI)**는 수백~수만 명이 자발적으로 참여하여, 각자가 소유한 컴퓨터의 컴퓨팅 파워를 공유하는 **품앗이 형태의 오픈 LLM**을 만드는 프로젝트입니다. 초기 학습 데이터는 Dart와 Flutter 개발 학습 자료를 기반으로, 개념 설명·코드 예시·학습 가이드형 응답을 생성합니다.
 
-- **공식 명칭**: FAI
-- **기술적 분류 명칭**: Flutter Study GPT, Flutter LM, Flutter AI, Dart/Flutter Learning Model
-- **전체적 의미**: Dart/Flutter 개발 학습에 특화된 소규모 LLM 기반 AI
+- **공식 명칭**: FAI (Family AI)
+- **기술적 분류 명칭**: Flutter Study GPT, Flutter LM, Family AI, Dart/Flutter Learning Model
+- **전체적 의미**: 같은 가족·팀이 함께 컴퓨팅 파워를 모아 만드는 Dart/Flutter 특화 오픈 LLM
+
+## 왜 FAI인가?
+
+기존 대형 AI 회사들은 막대한 자본으로 데이터 센터를 건설하고, 그 비용을 회수하기 위해 수익화에 집중합니다. FAI는 이와 다른 접근을 합니다:
+
+- **익명의 자발적 참여**: 인터넷상의 자발적인 참여자들이 자신의 컴퓨터(GPU/CPU)를 제공하여 슈퍼 컴퓨팅 환경을 구성
+- **수익화 불가 모델**: 익명의 참여로 만들어진 AI는 특정 회사가 마음대로 운영하거나 수익화할 수 없음
+- **완전 오픈소스**: 100% 오픈소스로, 최소한의 운영비를 위한 수익화만 가능한 구조
+- **100% 직접 구현**: 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 처음부터 학습
+
+## 분산 학습 시스템
+
+BOINC(과학 분산 컴퓨팅) + Federated Learning(연합 학습)의 개념을 결합한 분산 학습 플랫폼입니다.
+
+```
+┌─────────────────────────────────────┐
+│        중앙 서버 (Coordinator)        │
+│     Supabase PostgreSQL + Storage    │
+│     FastAPI (REST + WebSocket)       │
+└──────────────────┬──────────────────┘
+                   │ HTTPS
+       ┌───────────┼───────────┐
+       ▼           ▼           ▼
+  ┌──────────┐ ┌──────────┐ ┌──────────┐
+  │ 워커 A    │ │ 워커 B    │ │ 워커 C    │
+  │ (GPU)    │ │ (CPU)    │ │ (GPU)    │
+  │ 오전 참여  │ │ 밤에 참여  │ │ 주말 참여  │
+  └──────────┘ └──────────┘ └──────────┘
+```
+
+### 핵심 특징
+
+| 특징 | 설명 |
+|------|------|
+| **자유 참여/이탈** | 스크립트 실행으로 참여, Ctrl+C로 이탈. 다른 워커에 영향 없음 |
+| **하드웨어 무관** | NVIDIA GPU, Apple Silicon, CPU 모두 참여 가능 |
+| **대규모 확장** | 수십 ~ 수만 대의 컴퓨터가 동시 참여 가능 |
+| **진행 보존** | 어떤 워커가 빠져도 학습 진행 상태 유지 |
+| **기여도 추적** | 누가 얼마나 기여했는지 투명하게 기록 |
+| **기여 보상** | 학습 기여량에 비례하여 API 토큰 크레딧 적립 |
+
+### 워커 참여 방법
+
+```bash
+# 간단한 참여 방법
+$ python -m distributed.worker \
+    --name "내 컴퓨터" \
+    --server https://fai.example.com \
+    --experiment 1
+
+# 하드웨어 자동 감지 → 최적 배치 크기 결정 → 학습 시작
+# Ctrl+C로 언제든 안전하게 종료 가능
+```
+
+### 학습 흐름
+
+```
+워커 참여 → 최신 체크포인트 다운로드 → 로컬 학습 수행 → 결과 업로드
+→ 서버에서 FedAvg 병합 → 글로벌 모델 업데이트 → 반복
+```
+
+상세 구현 계획은 [distributed-training-plan.md](distributed-training-plan.md)를 참조하세요.
 
 ## 프로젝트 목표
 
-- **100% 직접 구현**: 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 처음부터 학습
 - **학습 가이드형 출력**: 개념 설명, 코드 예시, 학습 체크리스트를 구조화된 형식으로 생성
 - **Mac M4 최적화**: MPS(Metal Performance Shaders) GPU 가속 지원
-- **소규모 스터디 모델**: 대규모 LLM이 아닌, Dart/Flutter 학습 정보 제공에 특화된 경량 모델
+- **Dart/Flutter 특화**: 초기 학습 데이터는 Dart/Flutter 공식 문서 기반
 
 ## 단계별 가이드
 
@@ -40,8 +101,9 @@ uv run python scripts/generate.py             # 텍스트 생성
 ```
 fai/
 ├── data/                    # 데이터 디렉토리
-│   ├── raw.txt              # 원본 데이터
-│   ├── samples.txt          # 전처리된 학습 샘플
+│   ├── raw/                 # Stage 1: 원본 Markdown (사이트별)
+│   ├── samples/             # Stage 2: 전처리된 학습 데이터
+│   ├── samples.txt          # Stage 3: 통합 학습 데이터
 │   ├── tokenizer.json       # BPE 토크나이저
 │   └── train.bin, val.bin   # 바이너리 데이터셋
 ├── scripts/                 # 실행 스크립트
@@ -50,6 +112,10 @@ fai/
 │   ├── build_bin_dataset.py # 바이너리 변환
 │   ├── train_gpt.py         # GPT 학습
 │   └── generate.py          # 텍스트 생성
+├── distributed/             # 분산 학습 패키지
+│   ├── server/              # 중앙 서버 (Coordinator)
+│   ├── worker/              # 워커 클라이언트
+│   └── common/              # 서버/워커 공통 모듈
 ├── checkpoints/             # 모델 체크포인트
 ├── docs/                    # 상세 기술 문서 (00~08)
 ├── faq/                     # FAQ 문서 (개념별 분리)
@@ -76,6 +142,12 @@ fai/
 | [07-generation.md](docs/07-generation.md) | 텍스트 생성, 샘플링 파라미터 |
 | [08-server.md](docs/08-server.md) | FAI LLM 서버, API, 데몬 실행 |
 
+### 분산 학습 문서
+
+| 문서 | 내용 |
+|------|------|
+| [distributed-training-plan.md](distributed-training-plan.md) | 분산 학습 시스템 상세 구현 계획 |
+
 ### FAQ 문서 (faq/)
 
 핵심 개념을 쉽게 설명합니다. 전체 목차는 [faq.md](faq.md)를 참조하세요.
@@ -97,6 +169,7 @@ fai/
 3. **Self-Attention**: 문맥 내 단어 간 관계 학습
 4. **Next-token Prediction**: GPT의 유일한 학습 목표
 5. **데이터 포맷 = 모델 능력**: Dart/Flutter 학습 데이터로 학습하면 개발 학습 정보 출력
+6. **Federated Averaging**: 다수 워커의 로컬 학습 결과를 가중 평균으로 병합
 
 ## 권장 하이퍼파라미터 (M4 기준)
 

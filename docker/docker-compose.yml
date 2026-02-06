@@ -1,0 +1,84 @@
+# docker/docker-compose.yml
+# ============================================================================
+# FAI 분산 학습 시스템 — Docker Compose 구성
+# ============================================================================
+#
+# 【구성 요소】
+# - coordinator: FastAPI 기반 중앙 서버 (병합 + API)
+# - worker: 학습 워커 (여러 대 스케일 가능)
+#
+# 【사전 요구사항】
+# - Supabase PostgreSQL이 이미 실행 중이어야 합니다 (.environments 참조)
+# - data/train.bin, data/val.bin이 준비되어 있어야 합니다
+#
+# 【실행 방법】
+# cd docker
+# docker compose up coordinator          # 서버만 실행
+# docker compose up --scale worker=3     # 서버 + 워커 3대
+#
+# 【개발 모드】
+# docker compose up coordinator --build  # 코드 변경 후 재빌드
+#
+
+services:
+  # ========================================================================
+  # Coordinator 서버
+  # ========================================================================
+  coordinator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      uvicorn distributed.server.app:app
+      --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      # .environments 파일 (Supabase 접속 정보)
+      - ../.environments:/app/.environments:ro
+      # 체크포인트 영구 저장
+      - fai-storage:/app/storage
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ========================================================================
+  # 학습 워커
+  # ========================================================================
+  worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      python -m distributed.worker
+      --name "docker-worker"
+      --server http://coordinator:8000
+      --experiment 1
+    volumes:
+      # 학습 데이터 (읽기 전용)
+      - ../data:/app/data:ro
+      # 워커 캐시 (체크포인트 임시 저장)
+      - fai-worker-cache:/app/.fai-worker
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTORCH_ENABLE_MPS_FALLBACK=1
+    depends_on:
+      coordinator:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      # 워커 리소스 제한 (필요 시 조정)
+      resources:
+        limits:
+          memory: 4G
+
+volumes:
+  fai-storage:
+    driver: local
+  fai-worker-cache:
+    driver: local

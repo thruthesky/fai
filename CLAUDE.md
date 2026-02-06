@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-FAI (Flutter AI)는 Dart와 Flutter 개발 학습 정보를 제공하는 소규모 스터디 LLM을 처음부터(from scratch) 구현하는 학습 프로젝트입니다. 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 직접 구현합니다.
+FAI (Family AI)는 Dart와 Flutter 개발 학습 정보를 제공하는 소규모 스터디 LLM을 처음부터(from scratch) 구현하는 학습 프로젝트입니다. 파인튜닝이 아닌, 토크나이저부터 GPT 모델까지 직접 구현합니다.
 
 - **공식 명칭**: FAI
 - **분류**: Flutter Study GPT, Flutter LM, Dart/Flutter Learning Model
