@@ -6,3 +6,6 @@ checkpoints/ckpt.pt
 
 .environments
 
+# 대용량 학습 관련 파일
+storage/contributions/
+
