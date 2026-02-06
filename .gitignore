@@ -8,4 +8,6 @@ checkpoints/ckpt.pt
 
 # 대용량 학습 관련 파일
 storage/contributions/
+storage/checkpoints/
+.fai-worker/
 
