@@ -385,3 +385,54 @@ class TokenTransaction(Base):
         Index("idx_token_tx_worker", "worker_id"),
         Index("idx_token_tx_type", "type"),
     )
+
+
+# ============================================================================
+# 10. crawled_documents — 크롤링된 문서 저장 + 상태 추적
+# ============================================================================
+class CrawledDocument(Base):
+    """
+    크롤링된 Dart/Flutter 공식 문서 저장 및 상태 추적
+
+    【역할】
+    - 기존 data/raw/{domain}/{path}.md 파일 대체 (문서 내용 DB 저장)
+    - 기존 data/crawling-index.json 대체 (크롤링 상태 DB 저장)
+    - search-skill에서 크롤링한 문서를 PostgreSQL에 직접 저장
+
+    【상태 값】
+    - pending: 크롤링 대기
+    - completed: 크롤링 완료
+    - failed: 크롤링 실패 (error 컬럼에 원인 기록)
+    """
+    __tablename__ = "crawled_documents"
+
+    id = Column(Integer, primary_key=True)
+
+    # URL 정보
+    url = Column(Text, unique=True, nullable=False)       # 원본 URL (예: https://dart.dev/language/variables)
+    domain = Column(Text, nullable=False)                  # 도메인 (예: dart.dev)
+    url_path = Column(Text, nullable=False)                # URL 경로 (예: /language/variables)
+
+    # 문서 내용
+    title = Column(Text)                                   # 페이지 제목
+    content = Column(Text)                                 # 마크다운 콘텐츠 (포맷팅 완료 상태)
+    content_hash = Column(Text)                            # MD5 해시 (변경 감지용)
+    content_size = Column(Integer, default=0)              # 콘텐츠 바이트 크기
+
+    # 크롤링 상태
+    status = Column(Text, nullable=False, default="pending")  # pending, completed, failed
+    error = Column(Text)                                   # 실패 시 에러 메시지
+
+    # 시간 기록
+    first_crawled = Column(DateTime)                       # 최초 크롤링 시각
+    last_crawled = Column(DateTime)                        # 최근 크롤링 시각
+    crawl_count = Column(Integer, default=0)               # 크롤링 횟수
+
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (
+        Index("idx_crawled_docs_domain", "domain"),
+        Index("idx_crawled_docs_status", "status"),
+        Index("idx_crawled_docs_domain_status", "domain", "status"),
+    )

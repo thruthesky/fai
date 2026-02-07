@@ -1,6 +1,6 @@
 ---
 name: search-skill
-description: Crawl Dart/Flutter official documentation sites and save as Markdown files in data/raw/ folder. IMPORTANT - All content must be fetched and saved in ENGLISH ONLY. Use this skill when (1) "/search <site>" or "/search <URL>" command is executed, (2) collecting official docs from dart.dev, docs.flutter.dev, etc., (3) Stage 1 data collection tasks.
+description: Crawl Dart/Flutter official documentation sites and save directly to PostgreSQL (Supabase). Documents and crawling state are stored in the crawled_documents table. IMPORTANT - All content must be fetched and saved in ENGLISH ONLY. Use this skill when (1) "/search <site>" or "/search <URL>" command is executed, (2) collecting official docs from dart.dev, docs.flutter.dev, etc., (3) Stage 1 data collection tasks.
 user-invocable: true
 ---
 
@@ -8,7 +8,9 @@ user-invocable: true
 
 ## Purpose
 
-Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch tools to crawl official documentation sites and save as Markdown files in `data/raw/` folder, preserving the URL path structure.
+Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch tools to crawl official documentation sites and save directly to PostgreSQL (Supabase) `crawled_documents` table.
+
+**Requirements:** `.environments` file must exist in the project root with Supabase connection info.
 
 ---
 
@@ -19,9 +21,9 @@ Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch t
 | Rule | Description |
 |------|-------------|
 | **Search Language** | Always search and fetch content in **English** |
-| **Save Language** | All Markdown files must be written in **English** |
+| **Save Language** | All content must be written in **English** |
 | **WebFetch Prompt** | Use **English prompts** when fetching pages |
-| **File Content** | No Korean or other languages in saved `.md` files |
+| **DB Content** | No Korean or other languages in saved content |
 
 **Why English only?**
 - LLM training data should be consistent in language
@@ -46,36 +48,15 @@ Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch t
 
 ---
 
-## URL → File Path Mapping Rules
-
-| URL | Save Path |
-|-----|-----------|
-| `https://dart.dev/` | `data/raw/dart.dev/index.md` |
-| `https://dart.dev/overview` | `data/raw/dart.dev/overview.md` |
-| `https://dart.dev/language` | `data/raw/dart.dev/language.md` |
-| `https://dart.dev/language/variables` | `data/raw/dart.dev/language/variables.md` |
-| `https://docs.flutter.dev/` | `data/raw/docs.flutter.dev/index.md` |
-| `https://docs.flutter.dev/ui/widgets` | `data/raw/docs.flutter.dev/ui/widgets.md` |
-| `https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html` | `data/raw/api.flutter.dev/flutter/widgets/StatefulWidget-class.md` |
-
-**Conversion Rules:**
-1. Remove `https://`
-2. Use domain as top-level folder
-3. Convert URL path to subfolders/files
-4. Change `.html` extension to `.md`
-5. If path ends with `/`, save as `index.md`
-
----
-
 ## Target Sites
 
-| Site | Command | Save Path | Priority |
-|------|---------|-----------|----------|
-| dart.dev | `/search dart.dev` | `data/raw/dart.dev/` | 1 (Highest) |
-| docs.flutter.dev | `/search docs.flutter.dev` | `data/raw/docs.flutter.dev/` | 2 |
-| api.flutter.dev | `/search api.flutter.dev` | `data/raw/api.flutter.dev/` | 3 |
-| api.dart.dev | `/search api.dart.dev` | `data/raw/api.dart.dev/` | 4 |
-| pub.dev | `/search pub.dev` | `data/raw/pub.dev/` | 5 |
+| Site | Command | Priority |
+|------|---------|----------|
+| dart.dev | `/search dart.dev` | 1 (Highest) |
+| docs.flutter.dev | `/search docs.flutter.dev` | 2 |
+| api.flutter.dev | `/search api.flutter.dev` | 3 |
+| api.dart.dev | `/search api.dart.dev` | 4 |
+| pub.dev | `/search pub.dev` | 5 |
 
 ---
 
@@ -86,7 +67,7 @@ Handle Stage 1 data collection for the FAI project. Use WebFetch and WebSearch t
 Generate seed URL list for each domain using `extract_data.py --sitemap`:
 
 ```bash
-python3 .claude/skills/search-skill/scripts/extract_data.py --sitemap dart.dev
+uv run python .claude/skills/search-skill/scripts/extract_data.py --sitemap dart.dev
 ```
 
 ### Step 2: Fetch Each Page with WebFetch
@@ -100,43 +81,29 @@ WebFetch: https://dart.dev/language/variables
 Prompt: "Extract the complete content of this page in Markdown format. Include all code examples and explanations in English."
 ```
 
-### Step 3: Save and Update Index
+### Step 3: Save to PostgreSQL
 
-**⚠️ CRITICAL: After fetching EACH page, you MUST:**
-
-1. **Save the Markdown file** to `data/raw/<domain>/<path>.md`
-2. **Immediately update `data/crawling-index.json`** with the crawl status
-
-**DO NOT skip the index update!** The crawling index must be updated after every single page fetch to:
-- Track which URLs have been collected
-- Prevent duplicate crawling
-- Enable resume from interruption
-- Record timestamps and file paths
-
-### Step 4: Save with extract_data.py
-
-Save WebFetch results using `extract_data.py`:
+Save WebFetch results directly to DB using `extract_data.py`:
 
 ```bash
-# Save single page
-python3 .claude/skills/search-skill/scripts/extract_data.py \
+# Save single page to DB
+uv run python .claude/skills/search-skill/scripts/extract_data.py \
   --url "https://dart.dev/language/variables" \
-  --content "WebFetch result..." \
-  --output data/raw
+  --content "WebFetch result..."
 
 # Or batch process with JSON
 echo '[{"url": "...", "content": "..."}]' | \
-  python3 .claude/skills/search-skill/scripts/extract_data.py --output data/raw
+  uv run python .claude/skills/search-skill/scripts/extract_data.py
 ```
 
 ### Step 4: Check Collection Status
 
 ```bash
-# Overall status
-python3 .claude/skills/search-skill/scripts/extract_data.py --status --output data/raw
+# Overall status (DB query)
+uv run python .claude/skills/search-skill/scripts/extract_data.py --status
 
 # Status for specific domain
-python3 .claude/skills/search-skill/scripts/extract_data.py --status --domain dart.dev --output data/raw
+uv run python .claude/skills/search-skill/scripts/extract_data.py --status --domain dart.dev
 ```
 
 ---
@@ -151,9 +118,8 @@ python3 .claude/skills/search-skill/scripts/extract_data.py --status --domain da
 | `--content, -c` | Page content (Markdown) |
 | `--title, -t` | Page title (optional) |
 | `--input, -i` | Input JSON file (- for stdin) |
-| `--output, -o` | Output base directory (default: data/raw) |
 | `--sitemap, -s` | Generate seed URL list for domain |
-| `--status` | Display collection status |
+| `--status` | Display collection status (DB query) |
 | `--domain, -d` | Filter by specific domain |
 | `--links` | Extract links from content |
 | `--json` | Output in JSON format |
@@ -161,135 +127,73 @@ python3 .claude/skills/search-skill/scripts/extract_data.py --status --domain da
 ### Usage Examples
 
 ```bash
-# Generate seed URL list
-python3 extract_data.py --sitemap dart.dev
+# Generate seed URL list (no DB connection needed)
+uv run python extract_data.py --sitemap dart.dev
 
-# Save single page
-python3 extract_data.py --url "https://dart.dev/language" --content "..." --output data/raw
+# Save single page to DB
+uv run python extract_data.py --url "https://dart.dev/language" --content "..."
 
 # JSON input from stdin
-echo '{"url": "...", "content": "..."}' | python3 extract_data.py --output data/raw
+echo '{"url": "...", "content": "..."}' | uv run python extract_data.py
 
-# Collection status (including uncollected URLs)
-python3 extract_data.py --status --domain dart.dev --json --output data/raw
+# Collection status (DB query, including uncollected URLs)
+uv run python extract_data.py --status --domain dart.dev --json
 ```
 
 ---
 
-## Crawling Index (data/crawling-index.json)
+## DB Storage (crawled_documents Table)
 
-Manages crawling state and logs to prevent duplicate crawling and support re-crawling when needed.
+Documents and crawling state are stored in a single `crawled_documents` table in PostgreSQL (Supabase).
 
-### File Structure
+### Table Schema
 
-```json
-{
-  "version": "1.0",
-  "last_updated": "2024-01-27T10:30:00Z",
-  "settings": {
-    "max_age_days": 30,
-    "auto_refresh": true
-  },
-  "urls": {
-    "https://dart.dev/language/variables": {
-      "status": "completed",
-      "file_path": "data/raw/dart.dev/language/variables.md",
-      "first_crawled": "2024-01-25T08:00:00Z",
-      "last_crawled": "2024-01-27T10:30:00Z",
-      "crawl_count": 2,
-      "content_hash": "a1b2c3d4e5f6...",
-      "file_size": 4523,
-      "error": null
-    }
-  },
-  "statistics": {
-    "total_urls": 150,
-    "completed": 120,
-    "failed": 5,
-    "pending": 25,
-    "total_size_bytes": 2458000
-  }
-}
-```
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | INTEGER | Primary key |
+| `url` | TEXT (UNIQUE) | Original URL |
+| `domain` | TEXT | Domain (e.g., dart.dev) |
+| `url_path` | TEXT | URL path (e.g., /language/variables) |
+| `title` | TEXT | Page title |
+| `content` | TEXT | Markdown content |
+| `content_hash` | TEXT | MD5 hash (change detection) |
+| `content_size` | INTEGER | Content size in bytes |
+| `status` | TEXT | pending, completed, failed |
+| `error` | TEXT | Error message on failure |
+| `first_crawled` | TIMESTAMP | First crawl time |
+| `last_crawled` | TIMESTAMP | Last crawl time |
+| `crawl_count` | INTEGER | Total crawl count |
 
-### Field Descriptions
+### ORM Model
 
-| Field | Description |
-|-------|-------------|
-| `status` | `pending`, `in_progress`, `completed`, `failed`, `stale` |
-| `file_path` | Path to saved Markdown file |
-| `first_crawled` | First crawl time (ISO 8601) |
-| `last_crawled` | Last crawl time (ISO 8601) |
-| `crawl_count` | Total crawl count |
-| `content_hash` | MD5 hash of content (for change detection) |
-| `file_size` | Saved file size (bytes) |
-| `error` | Error message on failure |
-
----
-
-## Saved File Format
-
-**⚠️ All content must be in English:**
-
-```markdown
-# [Page Title]
-
-[Original document content converted to Markdown - IN ENGLISH]
-
-## Overview
-...
-
-## Details
-...
-
-## Code Examples
-```dart
-// Example code from the page
-void main() {
-  print('Hello, Dart!');
-}
-```
-
----
-
-## Source
-
-- **URL**: https://dart.dev/language/variables
-- **Fetched**: 2024-01-27
-```
+Defined in `distributed/server/models.py` as `CrawledDocument` class.
 
 ---
 
 ## Crawling Workflow (Claude Execution)
 
-1. **Initialize Index**: Create index with seed URLs on first crawl
+1. **Generate Seed URLs**: Create URL list for target domain
    ```bash
-   python3 extract_data.py --init-index --domain dart.dev
+   uv run python extract_data.py --sitemap dart.dev
    ```
 
-2. **Check Crawl Targets**: Query pending/stale URL list
+2. **Check Already Collected**: Query DB for completed URLs
    ```bash
-   python3 extract_data.py --check-index --domain dart.dev
+   uv run python extract_data.py --status --domain dart.dev
    ```
 
 3. **Iterative Crawling**: For each URL:
-   - Check status in index (skip if completed and within max_age)
+   - Check status in DB (skip if already completed)
    - Fetch content with WebFetch **(English prompt required)**
-   - Save Markdown file to `data/raw/`
-   - **⚠️ IMMEDIATELY update `data/crawling-index.json`** (DO NOT batch updates!)
+   - Save to DB via extract_data.py (UPSERT: insert or update)
 
 4. **Link Discovery**: When new links found in WebFetch results:
-   - Add to index as pending if not exists
-   - Continue collection
+   - Check if URL already exists in DB
+   - If not, fetch and save
 
-5. **Check Progress**: Review collection status via index statistics
+5. **Check Progress**: Review collection status via DB statistics
    ```bash
-   python3 extract_data.py --status --domain dart.dev
-   ```
-
-6. **Retry Failed URLs**: Check failed URL list and retry
-   ```bash
-   python3 extract_data.py --list-failed --domain dart.dev
+   uv run python extract_data.py --status --domain dart.dev
    ```
 
 ---
@@ -298,7 +202,7 @@ void main() {
 
 1. **Respect robots.txt**: Check each site's crawling policy
 2. **Request Interval**: Use appropriate delays to prevent server overload
-3. **Prevent Duplicates**: Skip already collected files (overwrite option available)
+3. **Prevent Duplicates**: DB UNIQUE constraint on URL prevents duplicates
 4. **Error Handling**: Log failed URLs and implement retry logic
 5. **English Only**: Always fetch and save content in English
 

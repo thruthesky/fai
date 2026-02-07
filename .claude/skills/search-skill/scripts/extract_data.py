@@ -1,68 +1,78 @@
 #!/usr/bin/env python3
 """
-extract_data.py - Dart/Flutter 공식 문서 크롤링 도구
+extract_data.py - Dart/Flutter 공식 문서 크롤링 도구 (PostgreSQL 저장)
 
 FAI 프로젝트 Stage 1 데이터 수집용 스크립트.
-WebFetch 결과를 받아서 URL 경로 구조 그대로 data/raw/ 폴더에 Markdown으로 저장한다.
+WebFetch 결과를 받아서 PostgreSQL(Supabase)의 crawled_documents 테이블에 직접 저장한다.
+기존 data/raw/ 파일 시스템 저장 방식을 대체한다.
 
 Usage:
-    # 단일 페이지 저장
-    python3 extract_data.py --url "https://dart.dev/language/variables" --content "..." --output data/raw
+    # 단일 페이지 저장 (DB에 직접 저장)
+    uv run python .claude/skills/search-skill/scripts/extract_data.py \\
+        --url "https://dart.dev/language/variables" --content "..."
 
-    # 파이프라인으로 사용 (JSON 입력)
-    echo '{"url": "https://dart.dev/overview", "content": "..."}' | python3 extract_data.py --output data/raw
+    # stdin에서 JSON 입력
+    echo '{"url": "...", "content": "..."}' | \\
+        uv run python .claude/skills/search-skill/scripts/extract_data.py
 
-    # 여러 페이지 배치 저장 (JSON 배열)
-    python3 extract_data.py --input pages.json --output data/raw
+    # 크롤링 시드 URL 생성
+    uv run python .claude/skills/search-skill/scripts/extract_data.py --sitemap dart.dev
+
+    # 수집 현황 확인 (DB 조회)
+    uv run python .claude/skills/search-skill/scripts/extract_data.py --status
+    uv run python .claude/skills/search-skill/scripts/extract_data.py --status --domain dart.dev
 """
 
 import argparse
+import asyncio
+import hashlib
 import json
 import os
-import sys
 import re
-from datetime import datetime
-from pathlib import Path
-from urllib.parse import urlparse
+import sys
+from datetime import datetime, timezone, UTC
 from typing import Optional
+from urllib.parse import urlparse
+
+# ============================================================================
+# 프로젝트 루트를 sys.path에 추가하여 distributed.server 패키지 import 가능하게 설정
+# extract_data.py 위치: .claude/skills/search-skill/scripts/extract_data.py
+# 프로젝트 루트: 4단계 상위 디렉토리
+# ============================================================================
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
+sys.path.insert(0, PROJECT_ROOT)
 
 
-def url_to_filepath(url: str, base_dir: str = "data/raw") -> str:
+# ============================================================================
+# DB 초기화/종료 함수 (distributed.server 인프라 재사용)
+# ============================================================================
+async def init_crawl_db() -> None:
     """
-    URL을 파일 경로로 변환한다.
-
-    변환 규칙:
-    1. https:// 제거
-    2. 도메인을 최상위 폴더로 사용
-    3. URL 경로를 하위 폴더/파일로 변환
-    4. .html 확장자는 .md로 변경
-    5. 경로 끝이 /이면 index.md로 저장
-
-    예시:
-    - https://dart.dev/ → data/raw/dart.dev/index.md
-    - https://dart.dev/overview → data/raw/dart.dev/overview.md
-    - https://dart.dev/language/variables → data/raw/dart.dev/language/variables.md
-    - https://api.flutter.dev/flutter/widgets/Text-class.html → data/raw/api.flutter.dev/flutter/widgets/Text-class.md
+    크롤링용 DB 연결을 초기화한다.
+    distributed/server/의 기존 DB 인프라를 재사용한다.
+    .environments 파일에서 Supabase 접속 정보를 로드한다.
     """
-    parsed = urlparse(url)
-    domain = parsed.netloc
-    path = parsed.path
+    from distributed.server.config import ServerConfig
+    from distributed.server.database import init_db, create_tables
 
-    # 경로 정규화
-    if not path or path == "/":
-        path = "/index"
-    elif path.endswith("/"):
-        path = path.rstrip("/") + "/index"
+    # .environments 파일 경로를 명시적으로 지정
+    env_path = os.path.join(PROJECT_ROOT, ".environments")
+    config = ServerConfig.from_env_file(env_path)
+    await init_db(config)
 
-    # .html → .md 변환
-    if path.endswith(".html"):
-        path = path[:-5]  # .html 제거
-
-    # 파일 경로 생성
-    filepath = os.path.join(base_dir, domain, path.lstrip("/") + ".md")
-    return filepath
+    # crawled_documents 테이블이 없으면 자동 생성
+    await create_tables()
 
 
+async def close_crawl_db() -> None:
+    """DB 연결을 종료한다."""
+    from distributed.server.database import close_db
+    await close_db()
+
+
+# ============================================================================
+# 콘텐츠 처리 함수 (파일 시스템과 무관하므로 그대로 유지)
+# ============================================================================
 def extract_links_from_content(content: str, base_url: str) -> list[str]:
     """
     마크다운 콘텐츠에서 내부 링크를 추출한다.
@@ -150,41 +160,84 @@ def format_markdown_content(content: str, url: str, title: Optional[str] = None)
     return content + source_section
 
 
-def save_page(url: str, content: str, base_dir: str, title: Optional[str] = None) -> str:
+# ============================================================================
+# DB 저장 함수 (기존 파일 시스템 저장을 대체)
+# ============================================================================
+async def save_page_to_db(url: str, content: str, title: Optional[str] = None) -> dict:
     """
-    페이지 콘텐츠를 파일로 저장한다.
+    페이지 콘텐츠를 PostgreSQL에 저장한다 (UPSERT).
+    기존 URL이 있으면 업데이트, 없으면 새로 삽입한다.
 
     Args:
         url: 페이지 URL
-        content: 페이지 콘텐츠 (마크다운)
-        base_dir: 저장 기본 디렉토리
+        content: 페이지 콘텐츠 (마크다운 원본)
         title: 페이지 제목 (선택)
 
     Returns:
-        저장된 파일 경로
+        {"url": url, "status": "saved", "content_size": ...}
     """
-    filepath = url_to_filepath(url, base_dir)
+    from sqlalchemy import select
+    from distributed.server.database import get_session_factory
+    from distributed.server.models import CrawledDocument
 
-    # 디렉토리 생성
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    parsed = urlparse(url)
+    domain = parsed.netloc
+    url_path = parsed.path or "/"
 
-    # 콘텐츠 포맷팅
-    formatted_content = format_markdown_content(content, url, title)
+    # 콘텐츠 포맷팅 (출처 메타데이터 추가)
+    formatted = format_markdown_content(content, url, title)
+    content_hash = hashlib.md5(formatted.encode("utf-8")).hexdigest()
+    content_size = len(formatted.encode("utf-8"))
+    # DB 컬럼이 TIMESTAMP WITHOUT TIME ZONE이므로 naive datetime 사용
+    now = datetime.now(UTC).replace(tzinfo=None)
 
-    # 파일 저장 (UTF-8)
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(formatted_content)
+    session_factory = get_session_factory()
+    async with session_factory() as session:
+        # 기존 레코드 확인
+        result = await session.execute(
+            select(CrawledDocument).where(CrawledDocument.url == url)
+        )
+        doc = result.scalar_one_or_none()
 
-    return filepath
+        if doc:
+            # 기존 레코드 업데이트
+            doc.content = formatted
+            doc.content_hash = content_hash
+            doc.content_size = content_size
+            doc.title = title or doc.title
+            doc.status = "completed"
+            doc.last_crawled = now
+            doc.crawl_count = (doc.crawl_count or 0) + 1
+            doc.error = None
+        else:
+            # 신규 레코드 삽입
+            doc = CrawledDocument(
+                url=url,
+                domain=domain,
+                url_path=url_path,
+                title=title,
+                content=formatted,
+                content_hash=content_hash,
+                content_size=content_size,
+                status="completed",
+                first_crawled=now,
+                last_crawled=now,
+                crawl_count=1,
+                error=None,
+            )
+            session.add(doc)
+
+        await session.commit()
+
+    return {"url": url, "status": "saved", "content_size": content_size}
 
 
-def process_batch(pages: list[dict], base_dir: str) -> dict:
+async def process_batch_to_db(pages: list[dict]) -> dict:
     """
-    여러 페이지를 배치로 처리한다.
+    여러 페이지를 배치로 DB에 저장한다.
 
     Args:
         pages: [{"url": "...", "content": "...", "title": "..."}] 형식의 페이지 목록
-        base_dir: 저장 기본 디렉토리
 
     Returns:
         처리 결과 요약
@@ -205,14 +258,125 @@ def process_batch(pages: list[dict], base_dir: str) -> dict:
             continue
 
         try:
-            filepath = save_page(url, content, base_dir, title)
-            results["saved"].append({"url": url, "filepath": filepath})
+            result = await save_page_to_db(url, content, title)
+            results["saved"].append(result)
         except Exception as e:
             results["failed"].append({"url": url, "error": str(e)})
 
     return results
 
 
+# ============================================================================
+# DB 조회 함수 (기존 파일 시스템 조회를 대체)
+# ============================================================================
+async def list_collected_docs(domain: Optional[str] = None) -> list[dict]:
+    """
+    DB에서 수집된 문서 목록을 조회한다.
+
+    Args:
+        domain: 특정 도메인만 필터 (선택)
+
+    Returns:
+        수집된 문서 정보 목록
+    """
+    from sqlalchemy import select
+    from distributed.server.database import get_session_factory
+    from distributed.server.models import CrawledDocument
+
+    session_factory = get_session_factory()
+    async with session_factory() as session:
+        query = select(CrawledDocument).order_by(CrawledDocument.url)
+        if domain:
+            query = query.where(CrawledDocument.domain == domain)
+
+        result = await session.execute(query)
+        docs = result.scalars().all()
+
+        return [
+            {
+                "url": doc.url,
+                "domain": doc.domain,
+                "status": doc.status,
+                "content_size": doc.content_size,
+                "crawl_count": doc.crawl_count,
+                "last_crawled": doc.last_crawled.isoformat() if doc.last_crawled else None,
+            }
+            for doc in docs
+        ]
+
+
+async def get_collected_urls_from_db(domain: str) -> set[str]:
+    """
+    DB에서 특정 도메인의 수집 완료된 URL 목록을 조회한다.
+
+    Args:
+        domain: 도메인
+
+    Returns:
+        수집된 URL set
+    """
+    from sqlalchemy import select
+    from distributed.server.database import get_session_factory
+    from distributed.server.models import CrawledDocument
+
+    session_factory = get_session_factory()
+    async with session_factory() as session:
+        result = await session.execute(
+            select(CrawledDocument.url).where(
+                CrawledDocument.domain == domain,
+                CrawledDocument.status == "completed",
+            )
+        )
+        return {row[0] for row in result.all()}
+
+
+async def get_status_from_db(domain: Optional[str] = None) -> dict:
+    """
+    DB에서 크롤링 현황 통계를 조회한다.
+
+    Args:
+        domain: 특정 도메인 필터 (선택)
+
+    Returns:
+        상태별 통계 정보
+    """
+    from sqlalchemy import select, func as sqlfunc
+    from distributed.server.database import get_session_factory
+    from distributed.server.models import CrawledDocument
+
+    session_factory = get_session_factory()
+    async with session_factory() as session:
+        query = select(
+            CrawledDocument.status,
+            sqlfunc.count().label("count"),
+            sqlfunc.coalesce(sqlfunc.sum(CrawledDocument.content_size), 0).label("total_size"),
+        ).group_by(CrawledDocument.status)
+
+        if domain:
+            query = query.where(CrawledDocument.domain == domain)
+
+        result = await session.execute(query)
+        rows = result.all()
+
+        stats = {}
+        total_count = 0
+        total_size = 0
+        for row in rows:
+            stats[row.status] = {"count": row.count, "total_size": row.total_size}
+            total_count += row.count
+            total_size += row.total_size
+
+        return {
+            "domain": domain or "all",
+            "total": total_count,
+            "total_size_bytes": total_size,
+            "by_status": stats,
+        }
+
+
+# ============================================================================
+# 시드 URL 생성 (변경 없음)
+# ============================================================================
 def generate_sitemap_urls(domain: str) -> list[str]:
     """
     도메인의 주요 URL 목록을 생성한다.
@@ -430,90 +594,31 @@ def generate_sitemap_urls(domain: str) -> list[str]:
     return [base_url + path for path in paths]
 
 
-def list_collected_files(base_dir: str, domain: Optional[str] = None) -> list[str]:
-    """
-    이미 수집된 파일 목록을 반환한다.
-
-    Args:
-        base_dir: 기본 디렉토리 (data/raw)
-        domain: 특정 도메인만 조회 (선택)
-
-    Returns:
-        수집된 .md 파일 경로 목록
-    """
-    search_path = Path(base_dir)
-    if domain:
-        search_path = search_path / domain
-
-    if not search_path.exists():
-        return []
-
-    return sorted([str(p) for p in search_path.rglob("*.md")])
-
-
-def get_collected_urls(base_dir: str, domain: str) -> set[str]:
-    """
-    이미 수집된 URL 목록을 반환한다.
-    파일 경로를 역으로 URL로 변환.
-
-    Args:
-        base_dir: 기본 디렉토리
-        domain: 도메인
-
-    Returns:
-        수집된 URL set
-    """
-    files = list_collected_files(base_dir, domain)
-    urls = set()
-
-    for filepath in files:
-        # 파일 경로에서 URL 복원
-        rel_path = os.path.relpath(filepath, base_dir)
-        parts = rel_path.split(os.sep)
-
-        if len(parts) < 1:
-            continue
-
-        file_domain = parts[0]
-        path_parts = parts[1:]
-
-        # index.md → /
-        if path_parts and path_parts[-1] == "index.md":
-            path_parts = path_parts[:-1]
-            url_path = "/" + "/".join(path_parts) if path_parts else "/"
-        else:
-            # .md 제거
-            if path_parts:
-                path_parts[-1] = path_parts[-1].replace(".md", "")
-            url_path = "/" + "/".join(path_parts)
-
-        url = f"https://{file_domain}{url_path}"
-        urls.add(url)
-
-    return urls
-
-
-def main():
+# ============================================================================
+# CLI 메인 함수 (asyncio 래핑)
+# ============================================================================
+async def async_main():
+    """비동기 메인 함수. DB 연결 초기화 후 CLI 명령을 처리한다."""
     parser = argparse.ArgumentParser(
-        description="Dart/Flutter 공식 문서 크롤링 도구",
+        description="Dart/Flutter 공식 문서 크롤링 도구 (PostgreSQL 저장)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 예시:
-  # 단일 페이지 저장
-  python3 extract_data.py --url "https://dart.dev/language" --content "..." --output data/raw
+  # 단일 페이지 DB에 저장
+  uv run python extract_data.py --url "https://dart.dev/language" --content "..."
 
   # stdin에서 JSON 입력
-  echo '{"url": "...", "content": "..."}' | python3 extract_data.py --output data/raw
+  echo '{"url": "...", "content": "..."}' | uv run python extract_data.py
 
   # 배치 처리 (JSON 파일)
-  python3 extract_data.py --input pages.json --output data/raw
+  uv run python extract_data.py --input pages.json
 
-  # 크롤링 시드 URL 생성
-  python3 extract_data.py --sitemap dart.dev
+  # 크롤링 시드 URL 생성 (DB 연결 불필요)
+  uv run python extract_data.py --sitemap dart.dev
 
-  # 수집 현황 확인
-  python3 extract_data.py --status --output data/raw
-  python3 extract_data.py --status --domain dart.dev --output data/raw
+  # 수집 현황 확인 (DB 조회)
+  uv run python extract_data.py --status
+  uv run python extract_data.py --status --domain dart.dev
         """
     )
 
@@ -523,19 +628,16 @@ def main():
     parser.add_argument("--title", "-t", help="페이지 제목 (선택)")
     parser.add_argument("--input", "-i", help="입력 JSON 파일 (- for stdin)")
 
-    # 출력 옵션
-    parser.add_argument("--output", "-o", default="data/raw", help="출력 기본 디렉토리")
-
     # 유틸리티 옵션
     parser.add_argument("--sitemap", "-s", help="도메인의 시드 URL 목록 생성")
-    parser.add_argument("--status", action="store_true", help="수집 현황 표시")
+    parser.add_argument("--status", action="store_true", help="수집 현황 표시 (DB 조회)")
     parser.add_argument("--domain", "-d", help="특정 도메인 필터")
     parser.add_argument("--links", action="store_true", help="콘텐츠에서 링크 추출")
     parser.add_argument("--json", action="store_true", help="JSON 형식으로 출력")
 
     args = parser.parse_args()
 
-    # 시드 URL 생성
+    # --sitemap: DB 연결 불필요한 명령
     if args.sitemap:
         urls = generate_sitemap_urls(args.sitemap)
         if args.json:
@@ -545,47 +647,7 @@ def main():
                 print(url)
         return
 
-    # 수집 현황 표시
-    if args.status:
-        if args.domain:
-            collected = get_collected_urls(args.output, args.domain)
-            total_urls = set(generate_sitemap_urls(args.domain))
-            remaining = total_urls - collected
-
-            status = {
-                "domain": args.domain,
-                "collected": len(collected),
-                "total": len(total_urls),
-                "remaining": len(remaining),
-                "progress": f"{len(collected) / len(total_urls) * 100:.1f}%" if total_urls else "N/A"
-            }
-
-            if args.json:
-                status["remaining_urls"] = sorted(list(remaining))
-                print(json.dumps(status, ensure_ascii=False, indent=2))
-            else:
-                print(f"도메인: {status['domain']}")
-                print(f"수집 완료: {status['collected']} / {status['total']} ({status['progress']})")
-                print(f"미수집: {status['remaining']}")
-                if remaining:
-                    print("\n미수집 URL:")
-                    for url in sorted(remaining)[:20]:  # 최대 20개만 표시
-                        print(f"  {url}")
-                    if len(remaining) > 20:
-                        print(f"  ... 외 {len(remaining) - 20}개")
-        else:
-            files = list_collected_files(args.output)
-            if args.json:
-                print(json.dumps({"files": files, "total": len(files)}, ensure_ascii=False, indent=2))
-            else:
-                print(f"총 수집 파일: {len(files)}")
-                for f in files[:30]:  # 최대 30개만 표시
-                    print(f"  {f}")
-                if len(files) > 30:
-                    print(f"  ... 외 {len(files) - 30}개")
-        return
-
-    # 링크 추출
+    # --links: DB 연결 불필요한 명령
     if args.links and args.content and args.url:
         links = extract_links_from_content(args.content, args.url)
         if args.json:
@@ -595,46 +657,101 @@ def main():
                 print(link)
         return
 
-    # 단일 페이지 저장
-    if args.url and args.content:
-        filepath = save_page(args.url, args.content, args.output, args.title)
-        result = {"url": args.url, "filepath": filepath, "status": "saved"}
-        if args.json:
-            print(json.dumps(result, ensure_ascii=False, indent=2))
-        else:
-            print(f"저장 완료: {filepath}")
-        return
+    # ---------------------------------------------------------------
+    # 이하 명령은 DB 연결이 필요함
+    # ---------------------------------------------------------------
+    await init_crawl_db()
+    try:
+        # --status: DB에서 수집 현황 조회
+        if args.status:
+            if args.domain:
+                # 특정 도메인의 상세 현황
+                collected = await get_collected_urls_from_db(args.domain)
+                total_urls = set(generate_sitemap_urls(args.domain))
+                remaining = total_urls - collected
+                db_status = await get_status_from_db(args.domain)
 
-    # JSON 입력 처리 (stdin 또는 파일)
-    input_source = args.input or "-"
+                status_info = {
+                    "domain": args.domain,
+                    "collected": len(collected),
+                    "total_seed": len(total_urls),
+                    "remaining": len(remaining),
+                    "progress": f"{len(collected) / len(total_urls) * 100:.1f}%" if total_urls else "N/A",
+                    "db_stats": db_status,
+                }
 
-    if input_source == "-":
-        if sys.stdin.isatty():
-            parser.print_help()
+                if args.json:
+                    status_info["remaining_urls"] = sorted(list(remaining))
+                    print(json.dumps(status_info, ensure_ascii=False, indent=2, default=str))
+                else:
+                    print(f"도메인: {status_info['domain']}")
+                    print(f"수집 완료: {status_info['collected']} / {status_info['total_seed']} ({status_info['progress']})")
+                    print(f"미수집: {status_info['remaining']}")
+                    print(f"DB 전체: {db_status['total']}개, {db_status['total_size_bytes']:,} bytes")
+                    if remaining:
+                        print("\n미수집 URL:")
+                        for url in sorted(remaining)[:20]:
+                            print(f"  {url}")
+                        if len(remaining) > 20:
+                            print(f"  ... 외 {len(remaining) - 20}개")
+            else:
+                # 전체 현황
+                db_status = await get_status_from_db()
+                if args.json:
+                    print(json.dumps(db_status, ensure_ascii=False, indent=2, default=str))
+                else:
+                    print(f"전체 문서: {db_status['total']}개, {db_status['total_size_bytes']:,} bytes")
+                    for status_name, info in db_status["by_status"].items():
+                        print(f"  {status_name}: {info['count']}개 ({info['total_size']:,} bytes)")
             return
-        data = json.load(sys.stdin)
-    else:
-        with open(input_source, "r", encoding="utf-8") as f:
-            data = json.load(f)
 
-    # 단일 객체 또는 배열 처리
-    if isinstance(data, dict):
-        pages = [data]
-    else:
-        pages = data
+        # --url + --content: 단일 페이지 DB 저장
+        if args.url and args.content:
+            result = await save_page_to_db(args.url, args.content, args.title)
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, indent=2))
+            else:
+                print(f"DB 저장 완료: {result['url']} ({result['content_size']:,} bytes)")
+            return
 
-    results = process_batch(pages, args.output)
+        # JSON 입력 처리 (stdin 또는 파일)
+        input_source = args.input or "-"
 
-    if args.json:
-        print(json.dumps(results, ensure_ascii=False, indent=2))
-    else:
-        print(f"저장 완료: {len(results['saved'])} / {results['total']}")
-        for item in results["saved"]:
-            print(f"  ✓ {item['filepath']}")
-        if results["failed"]:
-            print(f"실패: {len(results['failed'])}")
-            for item in results["failed"]:
-                print(f"  ✗ {item['url']}: {item['error']}")
+        if input_source == "-":
+            if sys.stdin.isatty():
+                parser.print_help()
+                return
+            data = json.load(sys.stdin)
+        else:
+            with open(input_source, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+        # 단일 객체 또는 배열 처리
+        if isinstance(data, dict):
+            pages = [data]
+        else:
+            pages = data
+
+        results = await process_batch_to_db(pages)
+
+        if args.json:
+            print(json.dumps(results, ensure_ascii=False, indent=2))
+        else:
+            print(f"DB 저장 완료: {len(results['saved'])} / {results['total']}")
+            for item in results["saved"]:
+                print(f"  ✓ {item['url']} ({item['content_size']:,} bytes)")
+            if results["failed"]:
+                print(f"실패: {len(results['failed'])}")
+                for item in results["failed"]:
+                    print(f"  ✗ {item['url']}: {item['error']}")
+
+    finally:
+        await close_crawl_db()
+
+
+def main():
+    """동기 진입점. asyncio.run()으로 비동기 메인을 실행한다."""
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
