@@ -5,6 +5,7 @@
 #   head.weight 와 tok_emb.weight 를 공유해 파라미터 약 35M → 23M 로 축소.
 from __future__ import annotations
 
+import math
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -14,6 +15,7 @@ import torch
 
 from distributed.common.model import GPT, GPTConfig
 
+from .checkpoint_io import load_checkpoint, save_checkpoint
 from .config import BLOCK_SIZE, VOCAB_SIZE
 
 
@@ -45,14 +47,13 @@ def create_model(config: GPTConfig | None = None, tie_weights: bool = True) -> G
 
 
 def load_checkpoint_model(ckpt_path: Path, device: str = "cpu") -> tuple[GPT, dict]:
-    """체크포인트에서 모델 복원 — 외부에서 받은 파일일 수 있으므로 weights_only 로만 로드한다."""
-    ckpt = torch.load(ckpt_path, map_location="cpu", weights_only=True)
-    cfg = GPTConfig.from_dict(ckpt.get("cfg", {}))
-    model = create_model(cfg)
-    model.load_state_dict(ckpt["model"])
-    # tying 재적용 (state_dict 로드가 공유를 끊을 수 있음)
+    """SafeTensors 체크포인트에서 모델 복원 (코드 실행 위험 없음)."""
+    state, meta = load_checkpoint(ckpt_path)
+    model = create_model(GPTConfig.from_dict(meta.get("cfg", {})))
+    model.load_state_dict(state)
+    # tying 재적용 — state_dict 로드가 텐서 공유를 끊는다.
     model.head.weight = model.tok_emb.weight
-    return model.to(device), ckpt
+    return model.to(device), meta
 
 
 def _get_batch(data: np.memmap, batch_size: int, block_size: int, device: str):
@@ -93,8 +94,8 @@ def train(
 
     start_step = 0
     if resume_from and resume_from.exists():
-        model, ckpt = load_checkpoint_model(resume_from, device)
-        start_step = int(ckpt.get("step", 0))
+        model, meta = load_checkpoint_model(resume_from, device)
+        start_step = int(meta.get("step", 0))
         print(f"[FAI] 체크포인트에서 이어 학습: step {start_step}")
     else:
         model = create_model().to(device)
@@ -133,16 +134,13 @@ def train(
 
 
 def _save(model: GPT, step: int, train_loss: float, val_loss: float, ckpt_path: Path) -> None:
-    ckpt_path.parent.mkdir(parents=True, exist_ok=True)
-    # 옵티마이저 상태는 저장하지 않는다 — 업로드 크기를 1/3로 줄이고,
-    # weights_only=True 로 로드 가능한 순수 텐서 딕셔너리를 유지한다.
-    torch.save(
-        {
-            "model": model.state_dict(),
-            "step": step,
-            "train_loss": train_loss,
-            "val_loss": val_loss,
-            "cfg": model.config.to_dict(),
-        },
+    # 옵티마이저 상태는 저장하지 않는다 — 업로드 크기를 1/3로 줄인다.
+    # 포맷은 SafeTensors (pickle 코드 실행 위험 없음) — checkpoint_io.py 참조.
+    save_checkpoint(
+        model.state_dict(),
         ckpt_path,
+        step=step,
+        cfg=model.config.to_dict(),
+        train_loss=None if math.isnan(train_loss) else train_loss,
+        val_loss=None if math.isnan(val_loss) else val_loss,
     )

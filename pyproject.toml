@@ -39,6 +39,9 @@ dependencies = [
     "tokenizers>=0.22.2",
     "torch>=2.9.1",
     "tqdm>=4.67.1",
+    # 체크포인트 포맷 — pickle(.pt)과 달리 로드 중 코드가 실행되지 않는다.
+    # 불특정 다수가 업로드한 체크포인트를 병합해야 하므로 필수.
+    "safetensors>=0.4.5",
 
     # === 분산 학습 서버 (distributed.server) ===
     "fastapi>=0.115.0",           # REST API 프레임워크
