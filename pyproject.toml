@@ -57,21 +57,32 @@ dependencies = [
     "psutil>=6.0.0",              # CPU/RAM/GPU 시스템 정보
 ]
 
+# getpes.com 파이 인공지능(FAI) 로컬 학습 CLI — 트레이닝·빌드는 전부 개인 컴퓨터에서 수행
+# [build-system] 이 있어야 uv 가 이 프로젝트를 패키지로 설치해 `uv run fai` 가 동작한다.
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+fai = "pescli.cli:main"
+
+[project.optional-dependencies]
+# ONNX 빌드용 (fai build): uv sync --extra build
+build = [
+    "onnx>=1.17.0",
+    "onnxruntime>=1.20.0",
+]
+
+[tool.setuptools]
+packages = ["pescli", "distributed", "distributed.common", "distributed.server", "distributed.worker"]
+
 # =============================================================================
 # 추가 가능한 선택적 섹션들 (필요시 주석 해제하여 사용)
 # =============================================================================
 
-# [project.optional-dependencies]
-# # 개발용 의존성 (uv add --dev로 추가)
-# dev = [
-#     "pytest",       # 테스트 프레임워크
-#     "black",        # 코드 포매터
-#     "ruff",         # 린터
-# ]
-
-# [project.scripts]
-# # CLI 명령어 등록 (패키지 설치 후 터미널에서 실행 가능)
-# jai = "jai.main:main"
+# [tool.pytest.ini_options]
+# # pytest 설정
+# testpaths = ["tests"]
 
 # [tool.uv]
 # # uv 패키지 매니저 전용 설정

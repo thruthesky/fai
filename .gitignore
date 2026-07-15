@@ -11,3 +11,7 @@ storage/contributions/
 storage/checkpoints/
 .fai-worker/
 
+
+# Python 빌드 부산물
+__pycache__/
+*.egg-info/
