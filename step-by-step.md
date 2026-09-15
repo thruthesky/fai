@@ -90,6 +90,8 @@ jai/
 - [체크포인트 파일 (`ckpt.pt`)](study.md#체크포인트-파일-ckptpt) - 모델 가중치, 옵티마이저 상태, 학습 단계
 - [모델 가중치 vs 벡터](study.md#모델-가중치-vs-벡터) - 역할과 형태의 차이
 - [파라미터란?](study.md#파라미터-parameter) - 모델이 학습하는 조절 가능한 숫자
+- [파라미터·벡터·텐서의 관계](study.md#파라미터벡터텐서의-관계) - 파라미터 하나가 스칼라 숫자라는 의미
+- [파라미터 수와 메모리](study.md#파라미터-수와-메모리) - 8B·32B 모델, 비트 수, 양자화와 실행 메모리
 
 > 📚 **참고**: [02-project-structure.md](docs/02-project-structure.md) - 프로젝트 구조
 
@@ -226,7 +228,7 @@ uv run python scripts/generate.py
 [/ANSWER]
 ```
 
-> 📚 **참고**: [07-generation.md](docs/07-generation.md) - 텍스트 생성
+> 📚 **참고**: [07-generation.md](docs/07-generation.md) - 텍스트 생성 | [AI 런타임](study.md#ai-런타임-학습된-모델을-실행하는-엔진) - ONNX Runtime, llama.cpp, FreeToken 비교
 
 ---
 
